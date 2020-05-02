@@ -4,8 +4,7 @@ const cors = ({ req, res }) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  req.greetings = 'cors';
-  return { req, res };
+  return ({ req, res });
 };
 const middlewares = [Database, Session, cors];
 
