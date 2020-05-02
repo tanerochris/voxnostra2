@@ -18,4 +18,9 @@ module.exports = {
     moduleNameMapper: {
         '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
     },
-}
+    moduleFileExtensions: ['js', 'json'],
+    roots: ['<rootDir>/__tests__'],
+    testRegex: ['.spec.js$', '.test.js$'],
+    coverageDirectory: './coverage',
+    testEnvironment: 'node',
+};

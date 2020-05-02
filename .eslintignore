@@ -4,3 +4,6 @@ docs
 public
 test
 .vscode
+build
+docker
+src/generated
