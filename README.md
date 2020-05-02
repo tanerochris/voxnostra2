@@ -29,9 +29,9 @@ Install `npm` or `yarn` if you dont have any of them already installed. We recom
 
 After clonning the repo to your local machine and moving into the cloned folder, Run `yarn install` to get started by installing dependencies. 
 
-Run `npm run dev` . This starts the development server on http://localhost:3000.
+Run `npm run dev` . This starts the development server on [http://localhost:3000](http://localhost:3000).
 
-Visit http://localhost:3000 to view application.
+Visit [http://localhost:3000](http://localhost:3000) to view application.
 
 #### Hints
 
