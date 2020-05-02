@@ -1,7 +1,7 @@
 import Middleware from '../../middlewares';
 import User from '../../schemas/user.model';
 
-const handler = async ({ req, res }) => {
+const TestHandler = async ({ res }) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   const user = new User({ name: 'leopoldo' });
@@ -9,4 +9,4 @@ const handler = async ({ req, res }) => {
   res.end(JSON.stringify({ name: 'leopold' }));
 };
 
-export default Middleware(handler);
+export default Middleware(TestHandler);
