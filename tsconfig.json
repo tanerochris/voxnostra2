@@ -19,5 +19,5 @@
         "target": "esnext"
     },
     "exclude": ["node_modules"],
-    "include": ["**/*.ts", "**/*.tsx", "libs/mongoose/index.js", "libs/mongoose/Database.js", "middlewares/withDatabase.js", "middlewares/index.js", "libs/mongoose/Session.js"]
+    "include": ["**/*.ts", "**/*.tsx", "libs/mongoose/index.js", "libs/mongoose/Database.js", "middlewares/withDatabase.js", "middlewares/index.js", "libs/mongoose/Session.js", "__tests__/sum.test.js", "utils/sum.js"]
 }
