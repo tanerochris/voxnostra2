@@ -14,10 +14,14 @@
 # misc
 .DS_Store
 
+# IDEA files
+.idea
+
+# Visual Studio Code
+.vscode
+
 # debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+yarn.lock
 package-lock.json
 # local env files
 .env.local
@@ -27,10 +31,6 @@ package-lock.json
 # Logs
 logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
