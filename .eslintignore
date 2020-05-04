@@ -1,8 +1,9 @@
 node_modules
-build
+.next
 docs
-docker
+public
 test
 .vscode
-koa/views
+build
+docker
 src/generated

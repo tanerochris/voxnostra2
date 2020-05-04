@@ -29,11 +29,9 @@ Install `npm` or `yarn` if you dont have any of them already installed. We recom
 
 After clonning the repo to your local machine and moving into the cloned folder, Run `yarn install` to get started by installing dependencies. 
 
-`src/index.js` is the entry to the project and source code should go into the `src` folder.
+Run `npm run dev` . This starts the development server on [http://localhost:3000](http://localhost:3000).
 
-All tests should be written in the `__tests__' folder. There's a sample in there.
-
-This starter uses [Parcel](https://parceljs.org/getting_started.html) as the bundler. It is much simpler that WebPack and the others
+Visit [http://localhost:3000](http://localhost:3000) to view application.
 
 #### Hints
 
