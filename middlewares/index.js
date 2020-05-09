@@ -6,7 +6,24 @@ const cors = ({ req, res }) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   return ({ req, res });
 };
-const middlewares = [Database, Session, cors];
+
+/**
+ * Middleware to send Json responses, sets the content-type, then ends the connection.
+ *
+ * @param req
+ * @param res
+ */
+const jsonResponse = ({ req, res }) => {
+  res.json = (data) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(data));
+  };
+
+  return ({ req, res });
+};
+
+const middlewares = [Database, Session, cors, jsonResponse];
 
 const runMiddlewares = async (_middlewares, count, reqRes) => {
   if (count === 0) return _middlewares[0](reqRes);
