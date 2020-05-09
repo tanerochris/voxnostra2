@@ -41,6 +41,9 @@ const Middleware = (...rest) => async (req, res) => {
     await runMiddlewares(functions, functions.length - 1, { req, res });
   } catch (e) {
     res.statusCode = e.status || 500;
+    // todo: add logger here
+    // eslint-disable-next-line no-console
+    console.error(e);
     return res.end(JSON.stringify(e));
   }
 
