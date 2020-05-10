@@ -1,0 +1,1048 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Voxnostr",
+    "termsOfService" : "http://voxnostra.com/terms",
+    "contact" : {
+      "name" : "example",
+      "url" : "http://example.com",
+      "email" : "example@email.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "externalDocs" : {
+    "url" : "https://app.swaggerhub.com/apis/tanerochris/qpi/0.1-oas3"
+  },
+  "servers" : [ {
+    "url" : "http://voxnostra.com/api"
+  } ],
+  "tags" : [ {
+    "name" : "user",
+    "description" : "Operations about user"
+  }, {
+    "name" : "project",
+    "description" : "Operations related to project"
+  } ],
+  "paths" : {
+    "/user/login" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Logs user into the system",
+        "operationId" : "Login user",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "headers" : {
+              "X-Rate-Limit" : {
+                "description" : "calls per hour allowed by the user",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                }
+              },
+              "X-Expires-After" : {
+                "description" : "date in UTC when token expires",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "format" : "date-time"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid username/password supplied",
+            "content" : {
+              "change/me" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Logs out current logged in user session",
+        "operationId" : "log out user",
+        "parameters" : [ ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/user/signup" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "Registers user into the system",
+        "operationId" : "sign up user",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_1"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "headers" : {
+              "X-Rate-Limit" : {
+                "description" : "calls per hour allowed by the user",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                }
+              },
+              "X-Expires-After" : {
+                "description" : "date in UTC when token expires",
+                "style" : "simple",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string",
+                  "format" : "date-time"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request, Invalid parameters",
+            "content" : {
+              "change/me" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_400_1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/me" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "Get user by user name",
+        "operationId" : "get user information",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "The name that needs to be fetched. Use user1 for testing. ",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "user not found",
+            "content" : {
+              "change/me" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "Updated user",
+        "description" : "This can only be done by the logged in user.",
+        "operationId" : "update user",
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "header",
+          "description" : "user id for in header token or in session",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Update user",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Updated"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        }
+      }
+    },
+    "/user/me/password" : {
+      "put" : {
+        "tags" : [ "user" ],
+        "summary" : "change user password",
+        "description" : "End point for changing user password",
+        "operationId" : "Change password",
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "header",
+          "description" : "found in header token or session ",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_2"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Password succesfully updated"
+          }
+        }
+      }
+    },
+    "/user/password/forgot" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "forgot password",
+        "description" : "request a password reset token",
+        "operationId" : "forgot password",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_3"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Reset token sent"
+          },
+          "500" : {
+            "description" : "Faillure to send request token",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/password/reset" : {
+      "post" : {
+        "tags" : [ "user" ],
+        "summary" : "reset password",
+        "description" : "return user to login page after recovering password.",
+        "operationId" : "reset password",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_4"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "password updated"
+          }
+        }
+      }
+    },
+    "/user/{user}/projects" : {
+      "summary" : "get all projects created by current user",
+      "description" : "display a summary of projects created by the current user",
+      "get" : {
+        "tags" : [ "user" ],
+        "summary" : "get a summary of projects",
+        "description" : "Summary list of projects created by user",
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "header",
+          "description" : "present in header or string",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "user",
+          "in" : "path",
+          "description" : "user equals me ,if projects requested are from current user, or user is the id of the user whose projects are to be displayed.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "array of objects",
+            "content" : {
+              "change/me" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project" : {
+      "post" : {
+        "tags" : [ "project" ],
+        "summary" : "create  a project",
+        "description" : "end point creates a project",
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "header",
+          "description" : "get from token or session of currently logged in User",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_5"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "success"
+          }
+        }
+      }
+    },
+    "/project/{project_id}" : {
+      "get" : {
+        "tags" : [ "project" ],
+        "summary" : "get project details",
+        "operationId" : "get project details",
+        "parameters" : [ {
+          "name" : "project_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Project",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "project not found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "project" ],
+        "summary" : "update project",
+        "operationId" : "update project",
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "header",
+          "description" : "taken from header token or session",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "project_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "resource updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "project" ],
+        "operationId" : "delete project",
+        "parameters" : [ {
+          "name" : "userid",
+          "in" : "query",
+          "description" : "taken from header token or session",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "project_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Default response",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Do not have permission",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_404"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects" : {
+      "get" : {
+        "tags" : [ "project" ],
+        "summary" : "list projects",
+        "description" : "list a summary of projects",
+        "operationId" : "list projects",
+        "parameters" : [ {
+          "name" : "search",
+          "in" : "query",
+          "description" : "search word, defaul value empty",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "default values name, status, contractors",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "number of items to return per query, default 20",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "for pagination, default 0",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "display projects",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/project_address"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          },
+          "organization" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "Organization" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "cover" : {
+            "type" : "string"
+          },
+          "logo" : {
+            "type" : "string"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/Organization_address"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          },
+          "organizationType" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Project" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "beneficiary" : {
+            "type" : "string"
+          },
+          "duration" : {
+            "type" : "string"
+          },
+          "createdBy" : {
+            "type" : "string"
+          },
+          "contractors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/project_contractors"
+            }
+          },
+          "attachments" : {
+            "type" : "string"
+          },
+          "cost" : {
+            "type" : "string"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/project_address"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          },
+          "executionPlan" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "example" : "[ none, awarded, in-progess, warning, danger, completed]"
+          }
+        }
+      },
+      "Comment" : {
+        "type" : "object",
+        "properties" : {
+          "userId" : {
+            "type" : "string"
+          },
+          "projectId" : {
+            "type" : "string"
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          }
+        }
+      },
+      "ApiErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "body" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/project_address"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          },
+          "organization" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "inline_response_400" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Invalid email or password"
+          }
+        }
+      },
+      "body_1" : {
+        "required" : [ "email", "name", "password" ],
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "organization" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "inline_response_400_1" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Invalid fields"
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/project_address"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          },
+          "organization" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "inline_response_404" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "body_2" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string"
+          },
+          "old_password" : {
+            "type" : "string"
+          },
+          "confirm_passwrod" : {
+            "type" : "string"
+          }
+        }
+      },
+      "body_3" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          }
+        }
+      },
+      "body_4" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string"
+          },
+          "confirm_password" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_2" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "duration" : {
+            "type" : "string"
+          },
+          "cost" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "example" : "[ none, awarded, in-progess, warning, danger, completed]"
+          }
+        }
+      },
+      "project_contractors" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "link" : {
+            "type" : "string"
+          }
+        }
+      },
+      "project_address" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string"
+          },
+          "town" : {
+            "type" : "string"
+          }
+        }
+      },
+      "body_5" : {
+        "required" : [ "beneficiary", "cost", "description", "executionPlan", "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "beneficiary" : {
+            "type" : "string"
+          },
+          "duration" : {
+            "type" : "string"
+          },
+          "contractors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/project_contractors"
+            }
+          },
+          "attachments" : {
+            "type" : "string"
+          },
+          "cost" : {
+            "type" : "string"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/project_address"
+          },
+          "executionPlan" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_3" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "beneficiary" : {
+            "type" : "string"
+          },
+          "duration" : {
+            "type" : "string"
+          },
+          "createdBy" : {
+            "type" : "string"
+          },
+          "contractors" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/project_contractors"
+            }
+          },
+          "attachments" : {
+            "type" : "string"
+          },
+          "cost" : {
+            "type" : "string"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "address" : {
+            "$ref" : "#/components/schemas/project_address"
+          },
+          "createdAt" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "type" : "string"
+          },
+          "executionPlan" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "example" : "[ none, awarded, in-progess, warning, danger, completed]"
+          }
+        }
+      },
+      "Organization_address" : {
+        "type" : "object",
+        "properties" : {
+          "town" : {
+            "type" : "string"
+          },
+          "country" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "UserArray" : {
+        "description" : "List of user object",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "required" : true
+      }
+    },
+    "securitySchemes" : {
+      "Voxnostra_auth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    },
+    "links" : { },
+    "callbacks" : { }
+  }
+}
