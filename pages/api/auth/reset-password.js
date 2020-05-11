@@ -16,18 +16,18 @@ import User from '../../../schemas/user/user.model';
  */
 async function ResetPasswordHandler({ req, res }) {
   if (req.method === 'POST') {
-    const { payload } = await verifyResetToken(req.body.resetToken);
+    const response = (await verifyResetToken(req.body.resetToken));
 
     const message = 'Password reset unsuccessful.';
     const details = {};
 
-    if (payload) {
-      const userWithPassword = await User.findById(payload.uid).select('password').exec();
+    if (response.payload) {
+      const userWithPassword = await User.findById(response.payload.uid).select('password').exec();
 
       if (userWithPassword && userWithPassword.password.validateResetToken(req.body.resetToken)) {
         await userWithPassword.password.resetPassword({
           password: req.body.newPassword,
-          strategy: payload.strategy
+          strategy: response.payload.strategy
         });
 
         res.statusCode = 204;

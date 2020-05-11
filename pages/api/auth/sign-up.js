@@ -23,15 +23,14 @@ async function SignUpHandler({ req, res }) {
         'Could not create account.'
       );
     }
-    const { password, ...rest } = req.body;
 
-    const user = new User({ ...rest, password: { value: password } });
+    const user = new User({ ...req.body, password: { value: req.body.password } });
 
     await user.save();
 
     setUserSession(req, user);
 
-    res.json(res.session.user);
+    res.json(req.session.user);
   }
 }
 
