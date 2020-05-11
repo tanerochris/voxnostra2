@@ -40,16 +40,21 @@ const Middleware = (...rest) => async (req, res) => {
   try {
     await runMiddlewares(functions, functions.length - 1, { req, res });
   } catch (e) {
-    res.statusCode = e.status || 500;
     // todo: add logger here
     // eslint-disable-next-line no-console
     console.error(e);
+    res.statusCode = e.status || 500;
+    res.setHeader('Content-Type', 'application/json');
     return res.end(JSON.stringify(e));
   }
 
+  // avoid stalling requests, when there's no return in handler
+  if (!res.headersSent) {
+    res.statusCode = 404;
+    return res.end('Resource Not Found');
+  }
 
-  res.statusCode = 404;
-  return res.end('Resource Not Found');
+  return null;
 };
 
 export default Middleware;
