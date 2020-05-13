@@ -25,18 +25,14 @@ const PasswordSchema = new Schema({
 PasswordSchema.pre('save', async function setPasswordPreSave(next) {
   this.updatedAt = new Date();
 
-  try {
-    // only harsh modified password - isModified
-    if (this.isModified('value')) {
-      // generate a salt
-      const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+  // only harsh modified password - isModified
+  if (typeof this.value === 'string' && this.isModified('value')) {
+    // generate a salt
+    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
 
-      // replacing clear-text with harsh
-      // harsh the password along with our new salt
-      this.value = await bcrypt.hash(this.value, salt);
-    }
-  } catch (error) {
-    return next(error);
+    // replacing clear-text with harsh
+    // harsh the password along with our new salt
+    this.value = await bcrypt.hash(this.value, salt);
   }
 
   return next();
