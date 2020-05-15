@@ -4,7 +4,7 @@ const cors = ({ req, res }) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  return ({ req, res });
+  return { req, res };
 };
 
 /**
@@ -15,12 +15,11 @@ const cors = ({ req, res }) => {
  */
 const jsonResponse = ({ req, res }) => {
   res.json = (data) => {
-    res.statusCode = 200;
+    res.statusCode = data.errorCode ? data.errorCode : 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(data));
   };
-
-  return ({ req, res });
+  return { req, res };
 };
 
 const middlewares = [Database, Session, cors, jsonResponse];

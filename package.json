@@ -19,7 +19,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest --watch",
+    "test": "jest --watch --verbose",
     "test:ci": "jest --ci",
     "lint": "eslint \"./**/*.js\""
   },
@@ -34,6 +34,7 @@
     "bcrypt": "^4.0.1",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
+    "isomorphic-unfetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.25.3",
     "mongoose": "^5.9.10",
@@ -41,7 +42,8 @@
     "next-session": "^3.1.0",
     "properties-reader": "^2.0.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "test-listen": "^1.1.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",
@@ -59,6 +61,7 @@
     "husky": "^4.2.5",
     "jest": "^25.5.1",
     "jest-dom": "^4.0.0",
+    "next-server": "^9.0.5",
     "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
   },
@@ -70,5 +73,8 @@
       "pre-commit": "yarn lint",
       "pre-push": "yarn test:ci"
     }
+  },
+  "peerDependencies": {
+    "mongodb-memory-server": "^6.6.0"
   }
 }
