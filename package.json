@@ -20,7 +20,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest --watch --verbose",
-    "test:ci": "jest --ci --detectOpenHandles",
+    "test:ci": "jest --ci --forceExit --detectOpenHandles --maxWorkers=10",
     "lint": "eslint \"./**/*.js\""
   },
   "dependencies": {
