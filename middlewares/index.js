@@ -19,7 +19,7 @@ const jsonResponse = ({ req, res }) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(data));
   };
-  return { req, res };
+  return ({ req, res });
 };
 
 const middlewares = [Database, Session, cors, jsonResponse];

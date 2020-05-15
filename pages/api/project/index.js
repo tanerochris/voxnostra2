@@ -5,18 +5,18 @@ import { ApiResponseError } from '../../../libs/api-errors';
 const Project = mongoose.model('Project');
 
 const IndexProjectHandler = async ({ req, res }) => {
-  const { method, body, session } = req;
-  if (method === 'POST') {
+
+  if (req.method === 'POST') {
     // check if user is logged in
-    if (session && !session.user) {
+    if (req.session && !req.session.user) {
       const errorResponse = ApiResponseError.getError({
         name: 'AuthorizationError',
         message: 'You must login to create a project.'
       });
       return res.json(errorResponse);
     }
-    body.createdBy = session.user.id;
-    const project = new Project(body);
+    req.body.createdBy = req.session.user.id;
+    const project = new Project(req.body);
     try {
       await project.save();
       return res.json(project.view());

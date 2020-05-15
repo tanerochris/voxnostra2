@@ -50,7 +50,5 @@ First, you can send a mail to buildforsdg@andela.com to indicate your interest, 
 
 ## Acknowledgements
 
-
-
 ## LICENSE
 MIT

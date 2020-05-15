@@ -5,14 +5,13 @@ const Project = mongoose.model('Project');
 
 const IndexProjectHandler = async ({ req, res }) => {
   if (req.method === 'GET') {
-    const {
-      limit = 0,
-      filter = 'name',
-      page = 0,
-      keyword = ''
-    } = req.query;
+    const limit = req.query.limit || 0;
+    const filter = req.query.filter || 'name';
+    const page = req.query.page || 0;
+    const keyword = req.query.keyword || ''
     const offset = Number(page) * Number(limit);
     let searchFilter = null;
+    
     switch (filter) {
       case 'name':
         searchFilter = { name: { $regex: new RegExp(`.*${keyword}.*`, 'i') } };
