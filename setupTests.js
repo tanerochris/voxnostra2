@@ -9,7 +9,10 @@ import { connect, closeDatabase } from './libs/tests/TestDatabase';
 /**
  * Connect to a new in-memory database before running any tests.
  */
-beforeAll(async () => connect());
+beforeAll(async (done) => {
+  await connect();
+  done();
+});
 /**
  * Clear all test data after every test.
  */
