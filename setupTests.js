@@ -18,4 +18,7 @@ beforeAll(async () => connect());
 /**
  * Remove and close the db and server.
  */
-afterAll(async () => closeDatabase());
+afterAll(async (done) => {
+  await closeDatabase();
+  done();
+});

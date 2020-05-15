@@ -37,6 +37,7 @@
     "isomorphic-unfetch": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.25.3",
+    "mongodb-memory-server": "^6.6.0",
     "mongoose": "^5.9.10",
     "next": "9.3.6",
     "next-session": "^3.1.0",
@@ -73,8 +74,5 @@
       "pre-commit": "yarn lint",
       "pre-push": "yarn test:ci"
     }
-  },
-  "peerDependencies": {
-    "mongodb-memory-server": "^6.6.0"
   }
 }
