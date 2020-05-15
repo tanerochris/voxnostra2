@@ -8,10 +8,9 @@ const IndexProjectHandler = async ({ req, res }) => {
     const limit = req.query.limit || 0;
     const filter = req.query.filter || 'name';
     const page = req.query.page || 0;
-    const keyword = req.query.keyword || ''
+    const keyword = req.query.keyword || '';
     const offset = Number(page) * Number(limit);
     let searchFilter = null;
-    
     switch (filter) {
       case 'name':
         searchFilter = { name: { $regex: new RegExp(`.*${keyword}.*`, 'i') } };

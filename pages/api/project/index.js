@@ -3,9 +3,7 @@ import Middleware from '../../../middlewares';
 import { ApiResponseError } from '../../../libs/api-errors';
 
 const Project = mongoose.model('Project');
-
 const IndexProjectHandler = async ({ req, res }) => {
-
   if (req.method === 'POST') {
     // check if user is logged in
     if (req.session && !req.session.user) {
