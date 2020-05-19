@@ -3,7 +3,7 @@ import PasswordSchema from './password/password.schema';
 import UserStatics from './user.statics';
 
 const UserSchema = new Schema({
-  name: String,
+  name: { type: String, required: true },
   email: {
     type: String,
     index: true,
@@ -11,12 +11,20 @@ const UserSchema = new Schema({
     required: true,
     validate: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Must be a valid email address.']
   },
+  phoneNumber: String,
+  address: {
+    town: String,
+    country: String
+  },
+  organization: { type: Boolean, default: false },
 
   password: { type: PasswordSchema, select: 0 }
+}, {
+  timestamps: true
 });
 
 UserSchema.statics = UserStatics;
 
-const User = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 
-export default User;
+export default UserModel;
