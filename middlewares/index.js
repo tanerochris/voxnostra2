@@ -49,6 +49,8 @@ const Middleware = (...rest) => async (req, res) => {
   }
 
   // avoid stalling requests, when there's no return in handler
+  // wait for nextTick to ensure headers have been sent if any
+  await new Promise((resolve) => process.nextTick(resolve));
   if (!res.headersSent) {
     res.statusCode = 404;
     return res.end('Resource Not Found');
