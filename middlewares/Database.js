@@ -18,7 +18,8 @@ const Database = async ({ req, res }) => {
     // eslint-disable-next-line no-console
     mongoose.connection.on('error', (error) => console.error(error));
   }
-  return { req, res };
+  const httpReqRes = { req, res };
+  return httpReqRes;
 };
 
 export default Database;

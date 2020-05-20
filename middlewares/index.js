@@ -20,7 +20,8 @@ const jsonResponse = ({ req, res }) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(data));
   };
-  return { req, res };
+  const httpReqRes = { req, res };
+  return httpReqRes;
 };
 
 const middlewares = [Database, Session, cors, jsonResponse];
