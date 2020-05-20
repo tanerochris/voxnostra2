@@ -1,21 +1,27 @@
 import moment from 'moment';
-import { AuthorizationError, ErrorResponse, ValidationError } from '../../../libs/api-errors';
-import { setUserSession } from '../../../libs/auth-helpers';
+import {
+  AuthorizationError,
+  ErrorResponse,
+  setUserSession,
+  ValidationError
+} from '../../../libs';
 import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import UserModel from '../../../schemas/user/user.model';
 
 /**
- * POST request
+ * Logs in, set user information on session object
+ *
  * @param req
- * @param req.body.email
- * @param req.body.password
+ * @param {'POST'} req.method
+ * @param {string} req.body.email
+ * @param {string} req.body.password
  * @param res
  * @returns {Promise<void>}
  */
 async function SignInHandler({ req, res }) {
   if (req.method === 'POST') {
     const details = {};
-    const userWithPassword = await User.getUserQuery(req.body.email).select('password').exec();
+    const userWithPassword = await UserModel.getUserQuery(req.body.email).select('password').exec();
 
     if (userWithPassword) {
       const { password } = userWithPassword;
@@ -35,7 +41,7 @@ async function SignInHandler({ req, res }) {
             await password.resetPasswordLock();
           }
 
-          setUserSession(req, await User.getUserQuery(req.body.email).exec());
+          setUserSession(req, await UserModel.getUserQuery(req.body.email).exec());
 
           return res.json(req.session.user);
         }

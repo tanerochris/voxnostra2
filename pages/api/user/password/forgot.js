@@ -1,18 +1,18 @@
-import { ValidationError } from '../../../libs/api-errors';
-import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import { ValidationError } from '../../../../libs';
+import Middleware from '../../../../middlewares';
+import User from '../../../../schemas/user/user.model';
 
 /**
- * POST
- * Request a password reset, user should not be having a session with device.
+ * Request a password reset, user may not be having a session with device.
  *
  * @param req
+ * @param {'POST'} req.method
  * @param {string} req.body.email
  * @param res
  * @returns {Promise<void>}
  * @constructor
  */
-async function RequestResetPasswordHandler({ req, res }) {
+async function UserPasswordResetHandler({ req, res }) {
   if (req.method === 'POST') {
     const userWithPassword = await User.getUserQuery(req.body.email, 'password').exec();
 
@@ -30,4 +30,4 @@ async function RequestResetPasswordHandler({ req, res }) {
   }
 }
 
-export default Middleware(RequestResetPasswordHandler);
+export default Middleware(UserPasswordResetHandler);

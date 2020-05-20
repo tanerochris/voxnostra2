@@ -1,15 +1,19 @@
-import { ValidationError } from '../../../libs/api-errors';
-import { setUserSession } from '../../../libs/auth-helpers';
+import {
+  setUserSession,
+  ValidationError
+} from '../../../libs';
 import Middleware from '../../../middlewares';
 import User from '../../../schemas/user/user.model';
 
 /**
- * POST only
- * Sign up a user, body must contain these two fields
+ * Sign up a user, body must contain these fields
  *
  * @param req
- * @param req.body.email
- * @param req.body.password
+ * @param {'POST'} req.method
+ * @param {string} req.body.name
+ * @param {string} req.body.email
+ * @param {string} req.body.password
+ * @param {string} req.body.organization
  * @param res
  * @returns {Promise<void>}
  */
