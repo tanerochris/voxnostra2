@@ -7,7 +7,7 @@ import {
   PWD_LOCK_TIME,
   PWD_MAX_LOGIN_ATTEMPTS,
   PWD_RESET_TOKEN_EXP
-} from '../../../libs/auth-helpers';
+} from '../../../libs';
 
 const PasswordMethods = {
   isLocked() {
@@ -23,6 +23,15 @@ const PasswordMethods = {
     return bcrypt.compare(candidatePassword, this.value);
   },
 
+  /**
+   * Generate a reset token based on a strategy
+   *
+   * @typedef {Object} PasswordResetTokenPayload
+   * @property {string} uid - The id of user this token belongs to
+   * @property {string} strategy - The reset strategy
+   * @param strategy
+   * @returns {Promise<string>}
+   */
   async generatePasswordResetToken(
     strategy
   ) {
