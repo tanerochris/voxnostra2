@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Schema } from 'mongoose';
-import { SALT_WORK_FACTOR } from '../../../libs/auth-helpers';
+import { SALT_WORK_FACTOR } from '../../../helpers/auth-helpers';
 import PasswordMethods from './password.methods';
 
 const PasswordSchema = new Schema(

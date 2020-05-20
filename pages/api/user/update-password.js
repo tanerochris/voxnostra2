@@ -1,6 +1,6 @@
-import { ErrorResponse, ValidationError } from '../../../libs/api-errors';
+import { ErrorResponse, ValidationError } from '../../../helpers/api-errors';
 import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import User from '../../../models/user/user.model';
 
 /**
  * POST
@@ -17,7 +17,9 @@ async function UpdatePasswordHandler({ req, res }) {
   if (req.method === 'POST') {
     const message = 'Password Update Unsuccessful.';
 
-    const userWithPassword = await User.findById(req.session.user && req.session.user.id).select('password').exec();
+    const userWithPassword = await User.findById(req.session.user && req.session.user.id)
+      .select('password')
+      .exec();
 
     if (!userWithPassword) {
       throw new ErrorResponse('User information missing');
@@ -26,7 +28,8 @@ async function UpdatePasswordHandler({ req, res }) {
     if (!(await userWithPassword.password.comparePassword(req.body.curPassword))) {
       await userWithPassword.password.incLoginAttempts();
       throw new ValidationError({
-        curPassword: 'Password incorrect, verify and try again.', message
+        curPassword: 'Password incorrect, verify and try again.',
+        message
       });
     }
 

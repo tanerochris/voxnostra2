@@ -1,4 +1,4 @@
-import sum from '../utils/sum';
+import sum from '../helpers/sum';
 
 describe('this a test test suit', () => {
   test('testing sum', () => {

@@ -5,7 +5,7 @@ module.exports = {
     node: true,
     jest: true
   },
-  extends: ['airbnb-base', 'plugin:react/recommended'],
+  extends: ['airbnb-base', 'plugin:react/recommended', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -15,11 +15,12 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'prettier/prettier': ['error'],
     'comma-dangle': ['error', 'never'],
     'no-param-reassign': ['error', { props: false }],
     'react/react-in-jsx-scope': 'off'
   },
-  plugins: ['react'],
+  plugins: ['react', 'prettier'],
   settings: {
     react: {
       version: 'detect', 

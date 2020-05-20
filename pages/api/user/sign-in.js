@@ -1,8 +1,8 @@
 import moment from 'moment';
-import { AuthorizationError, ErrorResponse, ValidationError } from '../../../libs/api-errors';
-import { setUserSession } from '../../../libs/auth-helpers';
+import { AuthorizationError, ErrorResponse, ValidationError } from '../../../helpers/api-errors';
+import { setUserSession } from '../../../helpers/auth-helpers';
 import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import User from '../../../models/user/user.model';
 
 /**
  * POST request
@@ -23,9 +23,7 @@ async function SignInHandler({ req, res }) {
       if (password) {
         // check if the account is currently locked
         if (password.isLocked()) {
-          throw new AuthorizationError(
-            `Account Locked, Try again ${moment(password.lockUntil).toNow()}.`
-          );
+          throw new AuthorizationError(`Account Locked, Try again ${moment(password.lockUntil).toNow()}.`);
         }
 
         const correct = await password.comparePassword(req.body.password);

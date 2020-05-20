@@ -15,12 +15,14 @@ export const JWT_SECRET = properties.get('auth.JWT_SECRET') || 'XYZ';
 export const JWT_ISSUER = properties.get('auth.JWT_ISSUER') || 'xyz';
 
 export function verifyResetToken(token) {
-  return new Promise((resolve) => jwt.verify(token, JWT_SECRET, (err, payload) => {
-    if (err) {
-      return resolve({ err, valid: false });
-    }
-    return resolve({ payload, valid: true });
-  }));
+  return new Promise((resolve) =>
+    jwt.verify(token, JWT_SECRET, (err, payload) => {
+      if (err) {
+        return resolve({ err, valid: false });
+      }
+      return resolve({ payload, valid: true });
+    })
+  );
 }
 
 export function setUserSession(req, user) {

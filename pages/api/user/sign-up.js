@@ -1,7 +1,7 @@
-import { ValidationError } from '../../../libs/api-errors';
-import { setUserSession } from '../../../libs/auth-helpers';
+import { ValidationError } from '../../../helpers/api-errors';
+import { setUserSession } from '../../../helpers/auth-helpers';
 import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import User from '../../../models/user/user.model';
 
 /**
  * POST only

@@ -7,7 +7,7 @@ import {
   PWD_LOCK_TIME,
   PWD_MAX_LOGIN_ATTEMPTS,
   PWD_RESET_TOKEN_EXP
-} from '../../../libs/auth-helpers';
+} from '../../../helpers/auth-helpers';
 
 const PasswordMethods = {
   isLocked() {
@@ -23,15 +23,11 @@ const PasswordMethods = {
     return bcrypt.compare(candidatePassword, this.value);
   },
 
-  async generatePasswordResetToken(
-    strategy
-  ) {
+  async generatePasswordResetToken(strategy) {
     const payload = { strategy, uid: this.ownerDocument().id };
     const JWTOptions = {
       issuer: JWT_ISSUER,
-      expiresIn: moment()
-        .add(PWD_RESET_TOKEN_EXP)
-        .valueOf()
+      expiresIn: moment().add(PWD_RESET_TOKEN_EXP).valueOf()
     };
 
     const resetToken = jwt.sign(payload, JWT_SECRET, JWTOptions);
@@ -44,7 +40,7 @@ const PasswordMethods = {
   },
 
   validateResetToken(token) {
-    return (this.newPasswordRequest && this.newPasswordRequest.token === token);
+    return this.newPasswordRequest && this.newPasswordRequest.token === token;
   },
 
   /**
@@ -68,7 +64,13 @@ const PasswordMethods = {
     // trigger and run middleware
     this.save({ suppressWarning: true });
 
-    return this.ownerDocument().save().then(() => this.ownerDocument().updateOne({ $push: { 'password.modifications': modification } }).exec());
+    return this.ownerDocument()
+      .save()
+      .then(() =>
+        this.ownerDocument()
+          .updateOne({ $push: { 'password.modifications': modification } })
+          .exec()
+      );
   },
 
   incLoginAttempts() {
@@ -86,9 +88,7 @@ const PasswordMethods = {
       // TODO: Implement send mail to client.
       // TODO: Implement log Account Locks.
       update.$set = {
-        'password.lockUntil': moment()
-          .add(PWD_LOCK_TIME)
-          .valueOf()
+        'password.lockUntil': moment().add(PWD_LOCK_TIME).valueOf()
       };
     }
 

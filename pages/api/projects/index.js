@@ -2,7 +2,11 @@ import mongoose from 'mongoose';
 import Middleware from '../../../middlewares';
 
 const Project = mongoose.model('Project');
-
+/**
+ * @async
+ * @desc Api handles project list and search request
+ * @param {{ req: NextApiRequest, res: NextApiResponse }} prop
+ */
 const IndexProjectHandler = async ({ req, res }) => {
   if (req.method === 'GET') {
     const limit = req.query.limit || 0;
@@ -11,6 +15,7 @@ const IndexProjectHandler = async ({ req, res }) => {
     const keyword = req.query.keyword || '';
     const offset = Number(page) * Number(limit);
     let searchFilter = null;
+    // list projects by filter
     switch (filter) {
       case 'name':
         searchFilter = { name: { $regex: new RegExp(`.*${keyword}.*`, 'i') } };

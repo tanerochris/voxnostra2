@@ -1,6 +1,6 @@
-import { ValidationError } from '../../../libs/api-errors';
+import { ValidationError } from '../../../helpers/api-errors';
 import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import User from '../../../models/user/user.model';
 
 /**
  * POST

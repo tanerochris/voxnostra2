@@ -1,10 +1,11 @@
-import { Database, Session } from '../libs/mongoose';
+import Database from './Database';
+import Session from './Session';
 
 const cors = ({ req, res }) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  return ({ req, res });
+  return { req, res };
 };
 
 /**
@@ -19,7 +20,7 @@ const jsonResponse = ({ req, res }) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(data));
   };
-  return ({ req, res });
+  return { req, res };
 };
 
 const middlewares = [Database, Session, cors, jsonResponse];
@@ -41,7 +42,6 @@ const Middleware = (...rest) => async (req, res) => {
   } catch (e) {
     // todo: add logger here
     // eslint-disable-next-line no-console
-    console.error(e);
     res.statusCode = e.status || 500;
     res.setHeader('Content-Type', 'application/json');
     return res.end(JSON.stringify(e));

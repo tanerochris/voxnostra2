@@ -1,5 +1,4 @@
 import Middleware from '../../../middlewares';
-
 /**
  * Sets the session value to null.
  *

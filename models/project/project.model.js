@@ -52,18 +52,15 @@ ProjectSchema.methods.view = function view(summary = false) {
   project.id = project._id;
   delete project._id;
   delete project.__v;
-  const {
-    id,
-    name,
-    description,
-    createdAt
-  } = project;
-  return summary ? {
-    id,
-    name,
-    description,
-    createdAt
-  } : Object.assign(project, { id });
+  const { id, name, description, createdAt } = project;
+  return summary
+    ? {
+        id,
+        name,
+        description,
+        createdAt
+      }
+    : Object.assign(project, { id });
 };
 delete mongoose.connection.models.Project;
 

@@ -61,6 +61,7 @@ describe('Updating a project', () => {
     expect(data.name).toEqual(projectUpdate.name);
     return server.close();
   });
+
   it('PUT /api/project/{project_id} 400 bad-request', async () => {
     expect.assertions(2);
     const requestHandler = (req, res) => {
@@ -80,11 +81,18 @@ describe('Updating a project', () => {
     expect(error).toBeTruthy();
     return server.close();
   });
+
   it('PUT /api/project/{project_id} 401 auth-error', async () => {
     expect.assertions(2);
-    const requestHandler = (req, res) => apiResolver(req, res, {
-      project_id: project2.view().id
-    }, ProjectHandler);
+    const requestHandler = (req, res) =>
+      apiResolver(
+        req,
+        res,
+        {
+          project_id: project2.view().id
+        },
+        ProjectHandler
+      );
     const server = http.createServer(requestHandler);
     const url = await listen(server);
     const response = await fetch(url, {
@@ -97,6 +105,7 @@ describe('Updating a project', () => {
     expect(error).toBeTruthy();
     return server.close();
   });
+
   it('PUT /api/project/{project_id} 403 permission-error', async () => {
     expect.assertions(2);
     const requestHandler = (req, res) => {
@@ -155,10 +164,10 @@ describe('Retrieving project', () => {
     expect(data.name).toEqual(project3.name);
     return server.close();
   });
+
   it('GET /api/project/{project_id} 200 success user-not-authenticated', async () => {
     expect.assertions(3);
-    const requestHandler = (req, res) => apiResolver(req, res,
-      { project_id: project3.view().id }, ProjectHandler);
+    const requestHandler = (req, res) => apiResolver(req, res, { project_id: project3.view().id }, ProjectHandler);
     const server = http.createServer(requestHandler);
     const url = await listen(server);
     const response = await fetch(url);
@@ -168,10 +177,10 @@ describe('Retrieving project', () => {
     expect(data.name).toEqual(project3.name);
     return server.close();
   });
+
   it('GET /api/project/{project_id} 404 not found', async () => {
     expect.assertions(2);
-    const requestHandler = (req, res) => apiResolver(req, res,
-      { project_id: 'justsometext' }, ProjectHandler);
+    const requestHandler = (req, res) => apiResolver(req, res, { project_id: 'justsometext' }, ProjectHandler);
     const server = http.createServer(requestHandler);
     const url = await listen(server);
     const response = await fetch(url);
@@ -197,10 +206,10 @@ describe('Deleteting project', () => {
     expect(response.status).toBe(200);
     return server.close();
   });
+
   it('DELETE /api/project/{project_id} 401 auth-error', async () => {
     expect.assertions(2);
-    const requestHandler = (req, res) => apiResolver(req, res,
-      { project_id: project2.view().id }, ProjectHandler);
+    const requestHandler = (req, res) => apiResolver(req, res, { project_id: project2.view().id }, ProjectHandler);
     const server = http.createServer(requestHandler);
     const url = await listen(server);
     const response = await fetch(url, {
@@ -211,6 +220,7 @@ describe('Deleteting project', () => {
     expect(error).toBeTruthy();
     return server.close();
   });
+
   it('DELETE /api/project/{project_id} 403 permission-error', async () => {
     expect.assertions(2);
     const requestHandler = (req, res) => {
@@ -229,6 +239,7 @@ describe('Deleteting project', () => {
     expect(error).toBeTruthy();
     return server.close();
   });
+
   it('DELETE /api/project/{project_id} 404 not-found', async () => {
     expect.assertions(2);
     const requestHandler = (req, res) => {

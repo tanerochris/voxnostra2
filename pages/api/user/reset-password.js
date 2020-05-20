@@ -1,7 +1,7 @@
-import { ValidationError } from '../../../libs/api-errors';
-import { verifyResetToken } from '../../../libs/auth-helpers';
+import { ValidationError } from '../../../helpers/api-errors';
+import { verifyResetToken } from '../../../helpers/auth-helpers';
 import Middleware from '../../../middlewares';
-import User from '../../../schemas/user/user.model';
+import User from '../../../models/user/user.model';
 
 /**
  * POST
@@ -16,7 +16,7 @@ import User from '../../../schemas/user/user.model';
  */
 async function ResetPasswordHandler({ req, res }) {
   if (req.method === 'POST') {
-    const response = (await verifyResetToken(req.body.resetToken));
+    const response = await verifyResetToken(req.body.resetToken);
 
     const message = 'Password reset unsuccessful.';
     const details = {};
