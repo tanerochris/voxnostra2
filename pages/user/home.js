@@ -1,4 +1,4 @@
-import UserHeader from './components/user_header';
+import UserHeader from '../components/user_header';
 
 export default function Signup() {
   return (
@@ -86,7 +86,7 @@ export default function Signup() {
                 </div>
                 <div className="column column-40 m">
                     <div className="row p">
-                        <h4>Project Name</h4>
+                        <h4>Current Project Name</h4>
                     </div>
                     <div className="row r">
                         <h5>About project</h5>

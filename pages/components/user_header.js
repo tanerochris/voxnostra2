@@ -41,10 +41,12 @@ export default class UserHeader extends Component {
                   <a href="#organisation">Your Organisations</a>
                 </li>
                 <li>
-                  <a href="#projects">See your profile</a>
+                  <a href="#projects">Your Projects</a>
                 </li>
                 <li>
-                  <a href="#projects">Profile settings</a>
+                  <Link href="/user/setting">
+                    <a href="#projects">Profile settings</a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#projects">Sign out</a>
