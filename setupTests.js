@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+
 // optional: configure or set up a testing framework before each test
 // if you delete this file, remove `setupFilesAfterEnv` from `jest.config.js`
 
@@ -11,18 +13,13 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongoServer = new MongoMemoryServer({ debug: true });
 const models = glob.sync('models/**/*.model.js', {});
-models.forEach( modelFilePath => require(`./${modelFilePath}`));
+models.forEach((modelFilePath) => require(`./${modelFilePath}`));
 
 /**
  * Connect to the in-memory database.
  */
 const connect = async () => {
-  const uri = await mongoServer.getConnectionString();
-  const mongooseOpts = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-  };
+  await mongoServer.getConnectionString();
 };
 
 /**

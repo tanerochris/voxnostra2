@@ -18,7 +18,8 @@ module.exports = {
     'prettier/prettier': ['error'],
     'comma-dangle': ['error', 'never'],
     'no-param-reassign': ['error', { props: false }],
-    'react/react-in-jsx-scope': 'off'
+    'react/react-in-jsx-scope': 'off',
+    'import/no-dynamic-require': 'off',
   },
   plugins: ['react', 'prettier'],
   settings: {

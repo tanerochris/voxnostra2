@@ -16,14 +16,14 @@ exports.JWT_ISSUER = properties.get('auth.JWT_ISSUER') || 'xyz';
 
 exports.verifyResetToken = function verifyResetToken(token) {
   return new Promise((resolve) =>
-    jwt.verify(token, JWT_SECRET, (err, payload) => {
+    jwt.verify(token, module.JWT_SECRET, (err, payload) => {
       if (err) {
         return resolve({ err, valid: false });
       }
       return resolve({ payload, valid: true });
     })
   );
-}
+};
 
 exports.setUserSession = function setUserSession(req, user) {
   if (user) {
@@ -33,4 +33,4 @@ exports.setUserSession = function setUserSession(req, user) {
       name: user.name
     };
   }
-}
+};

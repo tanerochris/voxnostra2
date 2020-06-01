@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const ContractorSchema = require('./contractor.schema');
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const ProjectSchema = new Schema(
   {
     name: {
@@ -69,6 +69,7 @@ ProjectSchema.methods.view = function view(summary = false) {
         id,
         name,
         description,
+        status,
         createdAt
       }
     : Object.assign(project, { id });

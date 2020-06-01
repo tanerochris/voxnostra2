@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 import fetch from 'isomorphic-unfetch';
 import ProjectHandler from '../../../pages/api/project/[project_id]';
 
-
 const Project = mongoose.model('Project');
 let project1 = null;
 let project2 = null;
@@ -51,7 +50,6 @@ project4 = new Project({
   createdBy: user.id
 });
 project4.save();
-
 
 describe('Updating a project', () => {
   it('PUT /api/project/{project_id} 200 success', async () => {
