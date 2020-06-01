@@ -1,26 +1,18 @@
-#[project title]
+# Voxnostra
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1504ba4dcd014a8d8fb07f0312f95d49)](https://app.codacy.com/gh/BuildForSDG/voxnostra?utm_source=github.com&utm_medium=referral&utm_content=BuildForSDG/voxnostra&utm_campaign=Badge_Grade_Settings)
 
 
 ## About
 
-What is this project about. Ok to enrich here or the section above it with an image. 
-
-Once this repo has been setup on Codacy by the TTL, replace the above badge with the actual one from the Codacy dashboard, and add the code coverage badge as well. This is mandatory
-
-This is a simple JavaScript starter repo template for setting up your project. The setup contains
-
-- Jest: For runnung tests. We strongly recommend that JavaScript projects use Jest
-
-- Eslint & Prettier: For formatting code to match ESlint AirBnB coding standard. You might need to install the ESlint and Prettier plugins for your code editor to make the most of these utilities
+Voxnostra is an independent platform where members of civil society, independent organizations and persons can track and report on the progress of public projects or contracts making accountability of public projects execution transparent and open to the taxpayer.  Individuals can report on the status of projects and equally have a live update on the level of execution of each project. With the help of civil society organizations, anti-corruption organizations, ministry of public contracts and volunteering individuals different public  projects or contracts will be uploaded to the platform together with roadmaps and financial plans or budget.
 
 ## Why
 
-Talk about what problem this solves, what SDG(s) and SGD targets it addresses and why these are imoirtant
+In Cameroon many development projects either remain on paper, executed poorly or end mid-way execution, funds are allocated for these projects. The failure of public projects slows down the development of the country and many times with no accountability to the tax payer. Most projects fail due to misappropriation of public funds by government officials, award ofcontracts to incompetent contracting companies as a result of bribery and corruption or nobackgound checks just to name a few. Most at times the taxpayer has little knowledge of theexistence, state of execution and financials of these public projects.
 
 ## Usage
- How would someone use what you have built, include URLs to the deployed app, service e.t.c when you have it setup
+
 
 
 ## Setup
@@ -43,8 +35,11 @@ Visit [http://localhost:3000](http://localhost:3000) to view application.
 - Run your app in local dev mode: `yarn start`. This puts the bundled app in a `dist` folder, set up a local web server at localhost:1234, and continues to watch for your code changes which it syncs with the local server. This means if you loaded the app in a browser, it will auto-refresh as you code along. Feel free to use whatever bundler best meets your needs. Parcel was only added as a sample and for those looking for a simple but effective solution to the hassle of bundlers. 
 
 ## Authors
-
-List the team behind this project. Their names linked to their Github, LinkedIn, or Twitter accounts should siffice. Ok to signify the role they play in the project, including the TTL and mentor
+[Tane J. Tangu](https://github.com/tanerochris)
+[Teneng Clifford](https://github.com/cliffordten)
+[Rodrick Nfinyoh M](https://github.com/mernxl)
+[Dzeudjouo Herve](https://github.com/dherve19)
+[Oluwafemi Akinwa](https://github.com/KaiserPhemi)
 
 ## Contributing
 If this project sounds interesting to you and you'd like to contribute, thank you!
@@ -55,12 +50,5 @@ First, you can send a mail to buildforsdg@andela.com to indicate your interest, 
 
 ## Acknowledgements
 
-Did you use someone else’s code?
-Do you want to thank someone explicitly?
-Did someone’s blog post spark off a wonderful idea or give you a solution to nagging problem?
-
-It's powerful to always give credit.
-
 ## LICENSE
 MIT
-

@@ -1,6 +1,6 @@
-import { ErrorResponse, ValidationError } from '../../../../helpers/api-errors';
-import Middleware from '../../../../middlewares';
-import User from '../../../../models/user/user.model';
+import { ErrorResponse, ValidationError } from '../../../helpers/api-errors';
+import Middleware from '../../../middlewares';
+import User from '../../../models/user/user.model';
 
 /**
  * Update current user's password

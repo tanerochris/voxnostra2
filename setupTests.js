@@ -4,3 +4,58 @@
 // used for __tests__/testing-library.js
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
+import 'isomorphic-unfetch';
+import mongoose from 'mongoose';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+
+const mongoServer = new MongoMemoryServer({ debug: true });
+
+/**
+ * Connect to the in-memory database.
+ */
+const connect = async () => {
+  const uri = await mongoServer.getConnectionString();
+  const mongooseOpts = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  };
+  await mongoose.connect(uri, mongooseOpts);
+};
+
+/**
+ * Drop database, close the connection and stop mongod.
+ */
+const closeDatabase = async () => {
+  await mongoose.connection.dropDatabase();
+  await mongoose.connection.close();
+  await mongoServer.stop();
+};
+
+/**
+ * Remove all the data for all db collections.
+ */
+/* const clearDatabase = async () => {
+  const { collections } = mongoose.connection;
+  Object.values(collections).forEach((collection) => collection.deleteMany());
+}; */
+
+/**
+ * Connect to a new in-memory database before running any tests.
+ */
+beforeAll(async (done) => {
+  await connect();
+  done();
+});
+/**
+ * Clear all test data after every test.
+ */
+// afterEach(async () => await clearDatabase());
+
+/**
+ * Remove and close the db and server.
+ */
+afterAll(async (done) => {
+  await closeDatabase();
+  done();
+});

@@ -1,6 +1,6 @@
-import { ValidationError } from '../../../../helpers/api-errors';
-import Middleware from '../../../../middlewares';
-import User from '../../../../models/user/user.model';
+import { ValidationError } from '../../../helpers/api-errors';
+import Middleware from '../../../middlewares';
+import User from '../../../models/user/user.model';
 
 /**
  * Request a password reset, user may not be having a session with device.

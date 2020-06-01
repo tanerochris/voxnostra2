@@ -1,7 +1,7 @@
-import { ValidationError } from '../../../../helpers/api-errors';
-import { verifyResetToken } from '../../../../helpers/auth-helpers';
-import Middleware from '../../../../middlewares';
-import User from '../../../../models/user/user.model';
+import { ValidationError } from '../../../helpers/api-errors';
+import { verifyResetToken } from '../../../helpers/auth-helpers';
+import Middleware from '../../../middlewares';
+import User from '../../../models/user/user.model';
 
 /**
  * Get the reset token from body as well as new password and reset password

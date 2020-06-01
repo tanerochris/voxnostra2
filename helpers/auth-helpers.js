@@ -21,16 +21,16 @@ export const JWT_ISSUER = properties.get('auth.JWT_ISSUER') || 'xyz';
  * @param {string} token
  * @returns {Promise<{ valid: boolean, payload: PasswordResetTokenPayload, err: any }>}
  */
-export function verifyResetToken(
-  token
-) {
-  return new Promise((resolve) => jwt.verify(token, JWT_SECRET, (err, payload) => {
-    if (err) {
-      return resolve({ err, valid: false });
-    }
+export function verifyResetToken(token) {
+  return new Promise((resolve) =>
+    jwt.verify(token, JWT_SECRET, (err, payload) => {
+      if (err) {
+        return resolve({ err, valid: false });
+      }
 
-    return resolve({ payload, valid: true });
-  }));
+      return resolve({ payload, valid: true });
+    })
+  );
 }
 
 /**
