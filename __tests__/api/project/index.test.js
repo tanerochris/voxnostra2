@@ -6,7 +6,8 @@ import IndexProjectHandler from '../../../pages/api/project/index';
 
 const project1 = {
   name: 'Project1',
-  description: 'This is the description for project 1.'
+  description: 'This is the description for project 1.',
+  beneficiary: 'Cameroon citizen'
 };
 const userSession1 = {
   id: '5ebd9350a20b7c2becfcac4c',
@@ -32,7 +33,7 @@ describe('Creating a project', () => {
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data).toBeTruthy();
-    expect({ name: data.name, description: data.description }).toEqual(project1);
+    expect(data.name).toEqual(project1.name);
     return server.close();
   });
   it('POST /api/project 400 bad-request', async () => {

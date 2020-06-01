@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
-import { Schema } from 'mongoose';
-import { SALT_WORK_FACTOR } from '../../../helpers/auth-helpers';
-import PasswordMethods from './password.methods';
+const bcrypt = require('bcrypt');
+const { Schema } = require('mongoose');
+const { SALT_WORK_FACTOR } = require('../../../helpers/auth-helpers');
+const PasswordMethods = require('./password.methods');
 
 const PasswordSchema = new Schema(
   {
@@ -45,4 +45,4 @@ PasswordSchema.pre('save', async function setPasswordPreSave(next) {
 
 PasswordSchema.methods = PasswordMethods;
 
-export default PasswordSchema;
+module.exports = PasswordSchema;

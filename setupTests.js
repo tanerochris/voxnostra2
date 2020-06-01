@@ -5,10 +5,13 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
 import 'isomorphic-unfetch';
+import glob from 'glob';
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongoServer = new MongoMemoryServer({ debug: true });
+const models = glob.sync('models/**/*.model.js', {});
+models.forEach( modelFilePath => require(`./${modelFilePath}`));
 
 /**
  * Connect to the in-memory database.
@@ -20,7 +23,6 @@ const connect = async () => {
     useUnifiedTopology: true,
     useCreateIndex: true
   };
-  await mongoose.connect(uri, mongooseOpts);
 };
 
 /**
@@ -44,6 +46,7 @@ const closeDatabase = async () => {
  * Connect to a new in-memory database before running any tests.
  */
 beforeAll(async (done) => {
+  // Add assetPrefix support based on the hostname
   await connect();
   done();
 });

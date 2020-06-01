@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+const { Schema } = require('mongoose');
 
 const ContractorSchema = new Schema(
   {
@@ -13,4 +13,4 @@ const ContractorSchema = new Schema(
   }
 );
 
-export default ContractorSchema;
+module.exports = ContractorSchema;

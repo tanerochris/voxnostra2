@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import path from 'path';
 import PropertiesReader from 'properties-reader';
-import '../models/all.model';
+// import '../models/all';
 
 const properties = PropertiesReader(path.resolve('voxnostra.properties'));
 const mongoDbProp = 'project.app.mongodb.devUrl';

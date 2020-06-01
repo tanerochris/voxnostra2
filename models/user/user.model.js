@@ -1,8 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
-import PasswordSchema from './password/password.schema';
-import UserStatics from './user.statics';
+const mongoose = require('mongoose');
+const PasswordSchema = require('./password/password.schema');
+const UserStatics = require('./user.statics');
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   name: String,
   email: {
     type: String,
@@ -22,4 +22,4 @@ delete mongoose.connection.models.User;
 
 const User = mongoose.model('User', UserSchema);
 
-export default User;
+module.exports = User;

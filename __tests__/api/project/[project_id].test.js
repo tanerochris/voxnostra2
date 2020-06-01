@@ -5,10 +5,12 @@ import mongoose from 'mongoose';
 import fetch from 'isomorphic-unfetch';
 import ProjectHandler from '../../../pages/api/project/[project_id]';
 
+
 const Project = mongoose.model('Project');
 let project1 = null;
 let project2 = null;
 let project3 = null;
+let project4 = null;
 const user = {
   id: '5ebd9350a20b7c2becfcac4c',
   email: 'testuser@example.com'
@@ -20,33 +22,43 @@ const user2 = {
 const projectUpdate = {
   name: 'ProjectUpdate'
 };
-
-beforeAll(async () => {
-  project1 = await new Project({
-    name: 'Project1',
-    description: 'This is a test project',
-    createdBy: user.id
-  }).save();
-
-  project2 = await new Project({
-    name: 'Project2',
-    description: 'This is a test project',
-    createdBy: user.id
-  }).save();
-
-  project3 = await new Project({
-    name: 'Project3',
-    description: 'This is a test project',
-    createdBy: user.id
-  }).save();
+project1 = new Project({
+  name: 'Project1',
+  description: 'This is a test project',
+  beneficiary: 'Cameroon',
+  createdBy: user.id
 });
+project1.save();
+project2 = new Project({
+  name: 'Project2',
+  description: 'This is a test project',
+  beneficiary: 'Cameroon',
+  createdBy: user.id
+});
+project2.save();
+
+project3 = new Project({
+  name: 'Project3',
+  description: 'This is a test project',
+  beneficiary: 'Cameroon',
+  createdBy: user.id
+});
+project3.save();
+project4 = new Project({
+  name: 'Project4',
+  description: 'This is a test project',
+  beneficiary: 'Cameroon',
+  createdBy: user.id
+});
+project4.save();
+
 
 describe('Updating a project', () => {
   it('PUT /api/project/{project_id} 200 success', async () => {
     expect.assertions(3);
     const requestHandler = (req, res) => {
       req.session = { user };
-      return apiResolver(req, res, { project_id: project1.view().id }, ProjectHandler);
+      return apiResolver(req, res, { project_id: project3.view().id }, ProjectHandler);
     };
     const server = http.createServer(requestHandler);
     const url = await listen(server);
@@ -153,7 +165,7 @@ describe('Retrieving project', () => {
     expect.assertions(3);
     const requestHandler = (req, res) => {
       req.session = { user };
-      return apiResolver(req, res, { project_id: project3.view().id }, ProjectHandler);
+      return apiResolver(req, res, { project_id: project4.view().id }, ProjectHandler);
     };
     const server = http.createServer(requestHandler);
     const url = await listen(server);
@@ -161,20 +173,20 @@ describe('Retrieving project', () => {
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data).toBeTruthy();
-    expect(data.name).toEqual(project3.name);
+    expect(data.name).toEqual(project4.name);
     return server.close();
   });
 
   it('GET /api/project/{project_id} 200 success user-not-authenticated', async () => {
     expect.assertions(3);
-    const requestHandler = (req, res) => apiResolver(req, res, { project_id: project3.view().id }, ProjectHandler);
+    const requestHandler = (req, res) => apiResolver(req, res, { project_id: project4.view().id }, ProjectHandler);
     const server = http.createServer(requestHandler);
     const url = await listen(server);
     const response = await fetch(url);
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data).toBeTruthy();
-    expect(data.name).toEqual(project3.name);
+    expect(data.name).toEqual(project4.name);
     return server.close();
   });
 

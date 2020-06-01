@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import MediaSchema from './media.schema';
+const mongoose = require('mongoose');
+const MediaSchema = require('./media.schema');
 
 delete mongoose.connection.models.Media;
 
-export default mongoose.model('Media', MediaSchema);
+module.exports = mongoose.model('Media', MediaSchema);

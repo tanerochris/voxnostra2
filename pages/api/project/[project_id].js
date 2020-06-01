@@ -29,7 +29,7 @@ const ProjectHandler = async ({ req, res }) => {
       if (!session.user) {
         errorResponse = ApiResponseError.getError({
           name: 'AuthorizationError',
-          message: 'You must login to create a project.'
+          message: 'You must login to edit a project.'
         });
         return res.json(errorResponse);
       }

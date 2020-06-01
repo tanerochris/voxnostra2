@@ -1,7 +1,8 @@
 /* eslint no-underscore-dangle: "off" */
-import mongoose, { Schema } from 'mongoose';
-import ContractorSchema from './contractor.schema';
+const mongoose = require('mongoose');
+const ContractorSchema = require('./contractor.schema');
 
+const Schema = mongoose.Schema;
 const ProjectSchema = new Schema(
   {
     name: {
@@ -14,19 +15,21 @@ const ProjectSchema = new Schema(
     },
     beneficiary: {
       type: String,
-      required: String
+      required: true
     },
     duration: {
       type: Number
     },
     period: {
       type: String,
-      enum: ['days', 'weeks', 'months', 'years'],
-      default: 'weeks'
+      enum: ['wks', 'mon', 'yrs'],
+      default: 'mon',
+      required: true
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: true
     },
     contractors: [ContractorSchema],
     attachments: [
@@ -35,6 +38,14 @@ const ProjectSchema = new Schema(
         ref: 'Media'
       }
     ],
+    currency: {
+      type: String,
+      default: 'XAF'
+    },
+    comments: {
+      type: Number,
+      default: 0
+    },
     cost: Number,
     tags: [String],
     executionPlan: String,
@@ -52,7 +63,7 @@ ProjectSchema.methods.view = function view(summary = false) {
   project.id = project._id;
   delete project._id;
   delete project.__v;
-  const { id, name, description, createdAt } = project;
+  const { id, name, description, createdAt, status } = project;
   return summary
     ? {
         id,
@@ -64,4 +75,4 @@ ProjectSchema.methods.view = function view(summary = false) {
 };
 delete mongoose.connection.models.Project;
 
-export default mongoose.model('Project', ProjectSchema);
+module.exports = mongoose.model('Project', ProjectSchema);
