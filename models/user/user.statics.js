@@ -10,4 +10,4 @@ const UserStatics = {
   }
 };
 
-export default UserStatics;
+module.exports = UserStatics;

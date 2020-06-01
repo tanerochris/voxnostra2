@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+const { Schema } = require('mongoose');
 
 const MediaSchema = new Schema(
   {
@@ -17,4 +17,4 @@ const MediaSchema = new Schema(
   }
 );
 
-export default MediaSchema;
+module.exports = MediaSchema;

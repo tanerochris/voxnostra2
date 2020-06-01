@@ -30,8 +30,12 @@ const IndexProjectHandler = async ({ req, res }) => {
         searchFilter = {};
         break;
     }
-    const projects = await Project.find(searchFilter).limit(Number(limit)).skip(offset).sort('-createdAt');
-    const data = projects.length ? projects.map((project) => project.view(true)) : [];
+    const projects = await Project.find(searchFilter)
+      .populate('createdBy', ['-password'])
+      .limit(Number(limit))
+      .skip(offset)
+      .sort('-createdAt');
+    const data = projects.length ? projects.map((project) => project.view()) : [];
     return res.json(data);
   }
   return null;

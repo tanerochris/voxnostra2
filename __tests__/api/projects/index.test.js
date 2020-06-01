@@ -11,24 +11,29 @@ const user = {
   email: 'testuser@example.com'
 };
 
-beforeAll(async () => {
-  await new Project({
+beforeAll(() => {
+  const project1 = new Project({
     name: 'Project1',
     description: 'This is a test project',
+    beneficiary: 'Cameroon',
     createdBy: user.id
-  }).save();
-
-  await new Project({
+  });
+  project1.save();
+  const project2 = new Project({
     name: 'Project2',
     description: 'This is a test project',
+    beneficiary: 'Cameroon',
     createdBy: user.id
-  }).save();
+  });
+  project2.save();
 
-  await new Project({
+  const project3 = new Project({
     name: 'Project3',
     description: 'This is a test project',
+    beneficiary: 'Cameroon',
     createdBy: user.id
-  }).save();
+  });
+  project3.save();
 });
 
 describe('Retrieving projects', () => {

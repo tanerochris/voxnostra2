@@ -1,13 +1,13 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import moment from 'moment';
-import {
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const moment = require('moment');
+const {
   JWT_ISSUER,
   JWT_SECRET,
   PWD_LOCK_TIME,
   PWD_MAX_LOGIN_ATTEMPTS,
   PWD_RESET_TOKEN_EXP
-} from '../../../helpers/auth-helpers';
+} = require('../../../helpers/auth-helpers');
 
 const PasswordMethods = {
   isLocked() {
@@ -112,4 +112,4 @@ const PasswordMethods = {
   }
 };
 
-export default PasswordMethods;
+module.exports = PasswordMethods;

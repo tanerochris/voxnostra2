@@ -1,31 +1,58 @@
-import mongoose, { Schema } from 'mongoose';
+/* eslint no-underscore-dangle: "off" */
+const mongoose = require('mongoose');
+const ContractorSchema = require('./contractor.schema');
 
-const ContractorSchema = new Schema(
-  {
-    name: String,
-    link: String
-  },
-  {
-    _id: false
-  }
-);
-
+const { Schema } = mongoose;
 const ProjectSchema = new Schema(
   {
-    name: { type: String, required: true },
-    description: String,
-    beneficiary: { type: String, required: true },
-    duration: String,
+    name: {
+      type: String,
+      required: true
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    beneficiary: {
+      type: String,
+      required: true
+    },
+    duration: {
+      type: Number
+    },
+    period: {
+      type: String,
+      enum: ['wks', 'mon', 'yrs'],
+      default: 'mon',
+      required: true
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     contractors: [ContractorSchema],
-    attachments: String,
-    cost: { type: String, required: true },
+    attachments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Media'
+      }
+    ],
+    currency: {
+      type: String,
+      default: 'XAF'
+    },
+    comments: {
+      type: Number,
+      default: 0
+    },
+    cost: Number,
     tags: [String],
     address: {
       town: String,
       country: String
     },
     executionPlan: String,
-    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
     status: {
       type: String,
       default: 'none',
@@ -37,6 +64,22 @@ const ProjectSchema = new Schema(
   }
 );
 
-const ProjectModel = mongoose.model('Project', ProjectSchema);
+ProjectSchema.methods.view = function view(summary = false) {
+  const project = JSON.parse(JSON.stringify(this));
+  project.id = project._id;
+  delete project._id;
+  delete project.__v;
+  const { id, name, description, createdAt, status } = project;
+  return summary
+    ? {
+        id,
+        name,
+        description,
+        status,
+        createdAt
+      }
+    : Object.assign(project, { id });
+};
+delete mongoose.connection.models.Project;
 
-export default ProjectModel;
+module.exports = mongoose.model('Project', ProjectSchema);

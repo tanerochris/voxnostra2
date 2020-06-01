@@ -1,8 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
-import PasswordSchema from './password/password.schema';
-import UserStatics from './user.statics';
+const mongoose = require('mongoose');
+const PasswordSchema = require('./password/password.schema');
+const UserStatics = require('./user.statics');
 
-const UserSchema = new Schema(
+const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: {
@@ -15,14 +15,9 @@ const UserSchema = new Schema(
         'Must be a valid email address.'
       ]
     },
-    phoneNumber: String,
-    address: {
-      town: String,
-      country: String
-    },
-    organization: { type: Boolean, default: false },
-
-    password: { type: PasswordSchema, select: 0 }
+    password: {
+      type: PasswordSchema
+    }
   },
   {
     timestamps: true
@@ -30,8 +25,6 @@ const UserSchema = new Schema(
 );
 
 UserSchema.statics = UserStatics;
-delete mongoose.connection.models.User;
+const User = mongoose.model('User', UserSchema);
 
-const UserModel = mongoose.model('User', UserSchema);
-
-export default UserModel;
+module.exports = User;
