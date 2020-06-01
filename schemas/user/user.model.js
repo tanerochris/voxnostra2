@@ -1,4 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
+import PasswordSchema from './password/password.schema';
+import UserStatics from './user.statics';
 
 const UserSchema = new Schema({
   name: { type: String, required: true },
@@ -6,17 +8,22 @@ const UserSchema = new Schema({
     type: String,
     index: true,
     unique: true,
-    required: true
+    required: true,
+    validate: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Must be a valid email address.']
   },
   phoneNumber: String,
   address: {
     town: String,
     country: String
   },
-  organization: String
+  organization: { type: Boolean, default: false },
+
+  password: { type: PasswordSchema, select: 0 }
 }, {
   timestamps: true
 });
+
+UserSchema.statics = UserStatics;
 
 const UserModel = mongoose.model('User', UserSchema);
 
