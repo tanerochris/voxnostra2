@@ -51,11 +51,9 @@ h3,h4,h5,h6 {
     align-self: center;
 }
 .form, form {
-    border: 0.01em solid #14082475;
     display: block;
     align-items: center;
     max-width: 40rem;
-    box-shadow: 0px 2px 1px 1px #210d3c2b;
 }
 .form .header, legend {
     background: #140824;

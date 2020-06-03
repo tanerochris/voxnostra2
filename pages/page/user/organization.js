@@ -1,119 +1,112 @@
-/* eslint-disable no-alert */
-import { useState } from 'react';
-import mongoose from 'mongoose';
-// import axios from 'axios';
-import PropTypes from 'prop-types';
-import Error from 'next/error';
 import UserHeader from '../../../components/partials/userHeader';
 
-const Project = mongoose.model('Project');
-const ViewProject = ({ project, errorCode }) => {
-  const [successMessage /* ,setSuccessMessage */] = useState('');
-  const [errorMessage /* ,setErrorMessage */] = useState('');
-  /*  const deleteProject = async (projectId) => {
-    if (window.confirm('Do you want to delete this project?')) {
-      try {
-        const response = await axios.delete(`/api/project/${projectId}`);
-        if (response.status === 200) {
-          setSuccessMessage('Project successfully deleted.');
-          setTimeout(() => {
-            window.location.assign(`/page/project/list`);
-          });
-        }
-      } catch (error) {
-        setErrorMessage(error.response.data.message);
-      }
-    }
-  }; */
-  if (errorCode) {
-    return <Error statusCode={errorCode} />;
-  }
+export default function Signup() {
   return (
     <div>
       <UserHeader />
-      <section className="mt-3">
-        <div
-          className="alert-box"
-          style={{
-            background: errorMessage ? '#ff0000ad' : '#32cd32a1',
-            display: errorMessage || successMessage ? 'block' : 'none'
-          }}
-        >
-          {errorMessage ? (
-            <div className="error">
-              <span>{errorMessage}</span>
-            </div>
-          ) : null}
-          {successMessage ? (
-            <div className="success">
-              <span>{successMessage}</span>
-            </div>
-          ) : null}
+      <section className="sec-org">
+        <div className="bg-org">
+          <img src="/assets/images/org_bg_img.jpg" alt="organisation-image" />
         </div>
+        <div className="info-org">
+          <div className="row">
+            <img src="/assets/images/avatar-1.png" alt="organisation-logo" />
+          </div>
+          <div className="row">
+            <h3>Organization Name</h3>
+          </div>
+          <div className="row">
+            <h4>Description</h4>
+          </div>
+          <div className="row">
+            <p>2,343 Followers</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-3">
         <div className="container">
           <div className="row u-section">
             <div className="column column-25 f">
-              <div className="current m project">
+              <div className="current m">
                 <div className="row r">
-                  <img src="/assets/images/avatar-1.png" alt="project-logo" />
-                </div>
-                <div className="row r">
-                  <h5>{project.name}</h5>
+                  <h5>Organisation Projects</h5>
                 </div>
                 <hr className="hr" />
-                <div className="row">
-                  <div className="column">
-                    <h6></h6>
-                    <p>Catergory: Educationi</p>
+                <div className="row pr">
+                  <div className="column column-25 o">
+                    <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
+                  </div>
+                  <div className="column column-75 o">
+                    <h6>Project Name 1</h6>
+                    <p>Time left: 3w 2days</p>
                     <p>
-                      Cost: {project.cost} {project.currency}
+                      Status: <span className="in-progress">In Progress</span>
                     </p>
-                    <p>Date Started: {project.createdAt}</p>
+                  </div>
+                </div>
+
+                <div className="row pr">
+                  <div className="column column-25 o">
+                    <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
+                  </div>
+                  <div className="column column-75 o">
+                    <h6>Project Name 2</h6>
+                    <p>Time left: 3w 2days</p>
                     <p>
-                      Duration: {project.duration} {project.period}
+                      Status: <span className="warning">Warning</span>
                     </p>
+                  </div>
+                </div>
+
+                <div className="row pr">
+                  <div className="column column-25 o">
+                    <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
+                  </div>
+                  <div className="column column-75 o">
+                    <h6>Project Name 3</h6>
+                    <p>Time left: 3w 2days</p>
                     <p>
-                      Status: <span className="in-progress">{project.status}</span>
+                      Status: <span className="danger">Danger</span>
                     </p>
+                  </div>
+                </div>
+
+                <div className="row pr">
+                  <div className="column column-25 o">
+                    <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
+                  </div>
+                  <div className="column column-75 o">
+                    <h6>Project Name</h6>
+                    <p>Time left: 3w 2days</p>
                     <p>
-                      Website: <a href="projectwebsite.com">www.projectwebsite.com</a>
+                      Status: <span className="in-progress">In Progress</span>
                     </p>
-                    <p>2,345 Followers</p>
                   </div>
                 </div>
               </div>
               <div className="complete m">
-                <div className="row pr project">
-                  <div className="row">
-                    <input type="checkbox" id="follow-project" />
-                    <p htmlFor="follow-project">Follow Project</p>
-                  </div>
-                  <div className="row">
-                    <input type="checkbox" id="upvote" />
-                    <p htmlFor="upvote">Upvote Project</p>
-                  </div>
-                  <div className="row">
-                    <input type="checkbox" id="downvote" />
-                    <p htmlFor="downvote">Downvote Project</p>
-                  </div>
+                <div className="row pr follow">
+                  <input type="checkbox" id="checkbox" />
+                  <p htmlFor="checkbox">Follow this Organization</p>
                 </div>
               </div>
             </div>
             <div className="column column-40 m">
               <div className="row r">
-                <h5>{project.createdBy.name}</h5>
+                <h5>About Organization</h5>
               </div>
               <hr className="hr" />
               <div className="row d">
-                <h6>Details</h6>
-                <p>{project.description}</p>
-              </div>
-              <div className="row d">
-                <h6>Execution plan</h6>
-                <p>{project.executionPlan}</p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut laoreet, neque in consectetur imperdiet,
+                  lacus sem lobortis enim, vitae accumsan ligula nulla ac lacus. Pellentesque in augue eget nuncdictum
+                  sodales. In blandit pellentesque vestibulum. Interdum et malesuada fames ac ante ipsum primis in
+                  faucibus. In vel sollicitudin leo.
+                </p>
               </div>
               <div className="row comment">
-                <p>{project.comments} Comments</p>
+                <p>12 Comments</p>
               </div>
               <div className="row comments">
                 <div className="row cmt">
@@ -163,7 +156,7 @@ const ViewProject = ({ project, errorCode }) => {
             </div>
             <div className="column column-25 m">
               <div className="row r">
-                <h5>Contractors</h5>
+                <h5>People in Organizations</h5>
               </div>
               <hr className="hr" />
               <div className="row pr">
@@ -202,35 +195,4 @@ const ViewProject = ({ project, errorCode }) => {
       </section>
     </div>
   );
-};
-export async function getServerSideProps({ params }) {
-  const project = await Project.findById(params.projectId).populate('createdBy', ['-password']);
-  let errorCode = '';
-  if (!project) errorCode = 404;
-  return {
-    props: {
-      project: project.view() || {},
-      errorCode
-    } // will be passed to the page component as props
-  };
 }
-ViewProject.propTypes = {
-  project: {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    createdBy: PropTypes.object,
-    createdAt: PropTypes.string,
-    duration: PropTypes.number,
-    period: PropTypes.string,
-    description: PropTypes.string,
-    comments: PropTypes.number,
-    status: PropTypes.string,
-    currency: PropTypes.string,
-    cost: PropTypes.number,
-    beneficiary: PropTypes.string,
-    executionPlan: PropTypes.string,
-    tags: PropTypes.array
-  },
-  errorCode: PropTypes.number
-};
-export default ViewProject;

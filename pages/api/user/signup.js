@@ -1,8 +1,8 @@
-import { ValidationError } from '../../../helpers/api-errors';
-import { setUserSession } from '../../../helpers/auth-helpers';
+import mongoose from 'mongoose';
+import { ApiResponseError } from '../../../helpers/api-errors';
 import Middleware from '../../../middlewares';
-import User from '../../../models/user/user.model';
 
+const User = mongoose.model('User');
 /**
  * Sign up a user, body must contain these fields
  *
@@ -17,22 +17,18 @@ import User from '../../../models/user/user.model';
  */
 async function SignUpHandler({ req, res }) {
   if (req.method === 'POST') {
-    if ((await User.find({ email: req.body.email }).exec()).length > 0) {
-      throw new ValidationError(
-        {
-          email: `${req.body.email} already taken, try another email.`
-        },
-        'Could not create account.'
-      );
+    const emailExist = await User.findOne({ email: req.body.email });
+    if (emailExist) {
+      const errorResponse = ApiResponseError.getError({
+        name: 'ForbiddenError',
+        message: `${req.body.email} already taken, try another email.`
+      });
+      return res.json(errorResponse);
     }
-
     const user = new User({ ...req.body, password: { value: req.body.password } });
-
     await user.save();
-
-    setUserSession(req, user);
-
-    res.json(req.session.user);
+    // setUserSession(req, user);
+    return res.json(user);
   }
 }
 
