@@ -23,7 +23,7 @@ async function SignUpHandler({ req, res }) {
         name: 'ForbiddenError',
         message: `${req.body.email} already taken, try another email.`
       });
-      return res.json(errorResponse);
+      return res.status(errorResponse.errorCode).json(errorResponse);
     }
     const user = new User({ ...req.body, password: { value: req.body.password } });
     await user.save();

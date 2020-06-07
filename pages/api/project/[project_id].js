@@ -17,7 +17,7 @@ const ProjectHandler = async ({ req, res }) => {
     // Check existence of project
     if (!project) {
       errorResponse = ApiResponseError.getError({ name: 'NotFoundError', message: `Item with id: ${id} not found.` });
-      return res.json(errorResponse);
+      return res.status(errorResponse.errorCode).json(errorResponse);
     }
     // handle get request
     if (method === 'GET') {
@@ -31,7 +31,7 @@ const ProjectHandler = async ({ req, res }) => {
           name: 'AuthorizationError',
           message: 'You must login to edit a project.'
         });
-        return res.json(errorResponse);
+        return res.status(errorResponse.errorCode).json(errorResponse);
       }
       // veify that user is creator of the resource
       if (session.user.id !== project.createdBy.toString()) {
@@ -39,7 +39,7 @@ const ProjectHandler = async ({ req, res }) => {
           name: 'ForbiddenError',
           message: "You don't have permission to update this project."
         });
-        return res.json(errorResponse);
+        return res.status(errorResponse.errorCode).json(errorResponse);
       }
       // handle update of project with new data
       if (method === 'PUT') {
@@ -55,7 +55,7 @@ const ProjectHandler = async ({ req, res }) => {
   } catch (error) {
     // handle error
     errorResponse = ApiResponseError.getError(error);
-    return res.json(errorResponse);
+    return res.status(errorResponse.errorCode).json(errorResponse);
   }
   return null;
 };

@@ -1,10 +1,8 @@
-import { applySession } from 'next-session';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import React from 'react';
 import AppHeader from '../components/partials/AppHeader';
-import { SessionUserType } from '../components/propTypes';
-import { sessionOptions } from '../middlewares/Session';
+import { SessionType } from '../components/propTypes';
+import getSession from '../helpers/session-helpers';
 
 const HomePage = ({ session }) => {
   const router = useRouter();
@@ -56,15 +54,13 @@ const HomePage = ({ session }) => {
 };
 
 HomePage.propTypes = {
-  session: PropTypes.shape({
-    user: SessionUserType
-  })
+  session: SessionType
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-  await applySession(req, res, sessionOptions);
+  const session = await getSession(req, res);
 
-  return { props: { session: { user: req.session?.user } } };
+  return { props: { session } };
 };
 
 export default HomePage;

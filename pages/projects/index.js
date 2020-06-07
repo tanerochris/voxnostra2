@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
-import { applySession } from 'next-session';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
 import AppHeader from '../../components/partials/AppHeader';
 import ProjectCard from '../../components/partials/project';
-import { SessionUserType } from '../../components/propTypes';
-import { sessionOptions } from '../../middlewares/Session';
+import { SessionType } from '../../components/propTypes';
+import getSession from '../../helpers/session-helpers';
 
 const ProjectsIndexPage = ({ projects, session }) => {
   return (
@@ -27,20 +26,18 @@ const ProjectsIndexPage = ({ projects, session }) => {
 };
 
 ProjectsIndexPage.propTypes = {
-  session: PropTypes.shape({
-    user: SessionUserType
-  }),
+  session: SessionType,
   projects: PropTypes.array
 };
 
 const ProjectModel = mongoose.model('Project');
 
 export const getServerSideProps = async ({ req, res }) => {
-  await applySession(req, res, sessionOptions);
+  const session = await getSession(req, res);
 
   const projects = (await ProjectModel.find().exec()).map((project) => project.view());
 
-  return { props: { session: { user: req.session?.user }, projects } };
+  return { props: { session, projects } };
 };
 
 export default ProjectsIndexPage;

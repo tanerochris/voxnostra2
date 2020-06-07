@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { applySession } from 'next-session';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AppHeader from '../components/partials/AppHeader';
 import { isAuthenticated } from '../helpers/auth-helpers';
-import { sessionOptions } from '../middlewares/Session';
+import getSession from '../helpers/session-helpers';
 
 const LoginPage = () => {
   const [successMessage, setSuccessMessage] = useState('');
@@ -117,14 +116,14 @@ const LoginPage = () => {
 LoginPage.propTypes = {};
 
 export const getServerSideProps = async ({ req, res }) => {
-  await applySession(req, res, sessionOptions);
+  await getSession(req, res);
 
   if (isAuthenticated(req)) {
     res.writeHead(302, { location: '/' });
     res.end();
   }
 
-  return {};
+  return { props: {} };
 };
 
 export default LoginPage;

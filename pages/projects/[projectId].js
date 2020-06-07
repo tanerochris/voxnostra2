@@ -5,8 +5,10 @@ import Error from 'next/error';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import AppHeader from '../../components/partials/AppHeader';
+import { ProjectType, SessionType } from '../../components/propTypes';
+import getSession from '../../helpers/session-helpers';
 
-const ViewProject = ({ project, errorCode }) => {
+const ViewProject = ({ project, errorCode, session }) => {
   const [successMessage /* ,setSuccessMessage */] = useState('');
   const [errorMessage /* ,setErrorMessage */] = useState('');
   /*  const deleteProject = async (projectId) => {
@@ -29,7 +31,7 @@ const ViewProject = ({ project, errorCode }) => {
   }
   return (
     <div>
-      <AppHeader />
+      <AppHeader user={session.user} />
       <section className="mt-3">
         <div
           className="alert-box"
@@ -205,34 +207,24 @@ const ViewProject = ({ project, errorCode }) => {
 
 const Project = mongoose.model('Project');
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, req, res }) {
+  const session = await getSession(req, res);
+
   const project = await Project.findById(params.projectId).populate('createdBy', ['-password']);
   let errorCode = '';
   if (!project) errorCode = 404;
   return {
     props: {
+      session,
       project: project.view() || {},
       errorCode
     } // will be passed to the page component as props
   };
 }
+
 ViewProject.propTypes = {
-  project: {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    createdBy: PropTypes.object,
-    createdAt: PropTypes.string,
-    duration: PropTypes.number,
-    period: PropTypes.string,
-    description: PropTypes.string,
-    comments: PropTypes.number,
-    status: PropTypes.string,
-    currency: PropTypes.string,
-    cost: PropTypes.number,
-    beneficiary: PropTypes.string,
-    executionPlan: PropTypes.string,
-    tags: PropTypes.array
-  },
+  session: SessionType,
+  project: ProjectType,
   errorCode: PropTypes.number
 };
 export default ViewProject;

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { isAuthenticated } from '../../../helpers/auth-helpers';
 import Middleware from '../../../middlewares';
 import { ApiResponseError } from '../../../helpers/api-errors';
 
@@ -10,12 +11,12 @@ const Project = mongoose.model('Project');
 const IndexProjectHandler = async ({ req, res }) => {
   if (req.method === 'POST') {
     // check if user is logged in
-    if (req.session && !req.session.user) {
+    if (!isAuthenticated(req)) {
       const errorResponse = ApiResponseError.getError({
         name: 'AuthorizationError',
         message: 'You must login to create a project.'
       });
-      return res.json(errorResponse);
+      return res.status(errorResponse.errorCode).json(errorResponse);
     }
     req.body.createdBy = req.session.user.id;
     const project = new Project(req.body);
@@ -26,7 +27,7 @@ const IndexProjectHandler = async ({ req, res }) => {
     } catch (error) {
       // handle error
       const errorResponse = ApiResponseError.getError(error);
-      return res.json(errorResponse);
+      return res.status(errorResponse.errorCode).json(errorResponse);
     }
   }
   return null;

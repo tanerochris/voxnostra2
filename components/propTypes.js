@@ -6,6 +6,10 @@ export const SessionUserType = PropTypes.shape({
   email: PropTypes.string
 });
 
+export const SessionType = PropTypes.shape({
+  user: SessionUserType
+});
+
 export const ProjectType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,

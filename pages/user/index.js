@@ -1,10 +1,8 @@
-import { applySession } from 'next-session';
-import PropTypes from 'prop-types';
 import React from 'react';
 import AppHeader from '../../components/partials/AppHeader';
-import { SessionUserType } from '../../components/propTypes';
+import { SessionType } from '../../components/propTypes';
 import { isAuthenticated } from '../../helpers/auth-helpers';
-import { sessionOptions } from '../../middlewares/Session';
+import getSession from '../../helpers/session-helpers';
 
 const UserHomePage = ({ session }) => {
   return (
@@ -211,20 +209,18 @@ const UserHomePage = ({ session }) => {
 };
 
 UserHomePage.propTypes = {
-  session: PropTypes.shape({
-    user: SessionUserType
-  })
+  session: SessionType
 };
 
 export const getServerSideProps = async ({ req, res }) => {
-  await applySession(req, res, sessionOptions);
+  const session = await getSession(req, res);
 
   if (!isAuthenticated(req)) {
     res.writeHead(302, { location: '/login' });
     res.end();
   }
 
-  return { props: { session: { user: req.session?.user } } };
+  return { props: { session } };
 };
 
 export default UserHomePage;

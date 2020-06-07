@@ -31,7 +31,7 @@ async function SignInHandler({ req, res }) {
             name: 'AuthorizationError',
             message: `Account Locked, Try again ${moment(password.lockUntil).toNow()}.`
           });
-          return res.json(errorResponse);
+          return res.status(errorResponse.errorCode).json(errorResponse);
         }
 
         const correct = await password.comparePassword(req.body.password);
@@ -45,16 +45,16 @@ async function SignInHandler({ req, res }) {
         }
         await password.incLoginAttempts();
         errorResponse = ApiResponseError.getError({ name: 'AuthorizationError', message: `Incorrect Password` });
-        return res.json(errorResponse);
+        return res.status(errorResponse.errorCode).json(errorResponse);
       }
       errorResponse = ApiResponseError.getError({ name: 'AuthorizationError', message: 'User information mismatch' });
-      return res.json(errorResponse);
+      return res.status(errorResponse.errorCode).json(errorResponse);
     }
     errorResponse = ApiResponseError.getError({
       name: 'AuthorizationError',
       message: `Unknown Username or Email, ${req.body.email}`
     });
-    return res.json(errorResponse);
+    return res.status(errorResponse.errorCode).json(errorResponse);
   }
   return null;
 }

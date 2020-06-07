@@ -1,13 +1,12 @@
 import axios from 'axios';
 import mongoose from 'mongoose';
-import { applySession } from 'next-session';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AppHeader from '../../components/partials/AppHeader';
-import { SessionUserType } from '../../components/propTypes';
-import { sessionOptions } from '../../middlewares/Session';
+import { SessionType } from '../../components/propTypes';
+import getSession from '../../helpers/session-helpers';
 
 const ProjectsEditPage = ({ project, session }) => {
   const [tags, setTag] = useState(project.tags || []);
@@ -230,23 +229,21 @@ ProjectsEditPage.propTypes = {
   error: PropTypes.shape({
     statusCode: PropTypes.number
   }),
-  session: PropTypes.shape({
-    user: SessionUserType
-  })
+  session: SessionType
 };
 
 const ProjectModel = mongoose.model('Project');
 export async function getServerSideProps({ query, req, res }) {
-  await applySession(req, res, sessionOptions);
+  const session = await getSession(req, res);
   let project = null;
 
   if (query.project_id) project = await ProjectModel.findById(query.project_id).populate('createdBy');
 
-  if (!project) return { session: { user: req.session?.user }, error: { statusCode: 404 } };
+  if (!project) return { session, error: { statusCode: 404 } };
   return {
     props: {
-      project: project.view(),
-      session: { user: req.session?.user }
+      session,
+      project: project.view()
     }
   };
 }
