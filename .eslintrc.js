@@ -1,4 +1,5 @@
 module.exports = {
+  parser: 'babel-eslint',
   env: {
     browser: true,
     es6: true,
@@ -15,16 +16,17 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    strict: 0,
     'prettier/prettier': ['error'],
     'comma-dangle': ['error', 'never'],
     'no-param-reassign': ['error', { props: false }],
     'react/react-in-jsx-scope': 'off',
-    'import/no-dynamic-require': 'off',
+    'import/no-dynamic-require': 'off'
   },
   plugins: ['react', 'prettier'],
   settings: {
     react: {
-      version: 'detect', 
+      version: 'detect'
     }
-  }   
+  }
 };
