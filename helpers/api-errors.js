@@ -81,11 +81,9 @@ class ApiResponseError extends Error {
   }
 }
 
-exports = {
-  ErrorResponse,
-  AuthorizationError,
-  ForbiddenError,
-  ValidationError,
-  NotFoundError,
-  ApiResponseError
-};
+exports.ErrorResponse = ErrorResponse;
+exports.AuthorizationError = AuthorizationError;
+exports.ForbiddenError = ForbiddenError;
+exports.ValidationError = ValidationError;
+exports.NotFoundError = NotFoundError;
+exports.ApiResponseError = ApiResponseError;
