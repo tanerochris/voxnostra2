@@ -5,27 +5,11 @@ const cors = ({ req, res }) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  const httpReqRes = { req, res };
-  return httpReqRes;
+
+  return { req, res };
 };
 
-/**
- * Middleware to send Json responses, sets the content-type, then ends the connection.
- *
- * @param req
- * @param res
- */
-const jsonResponse = ({ req, res }) => {
-  res.json = (data) => {
-    res.statusCode = data.errorCode ? data.errorCode : 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(data));
-  };
-  const httpReqRes = { req, res };
-  return httpReqRes;
-};
-
-const middlewares = [Database, Session, cors, jsonResponse];
+const middlewares = [Database, Session, cors];
 
 const runMiddlewares = async (_middlewares, count, reqRes) => {
   if (count === 0) return _middlewares[0](reqRes);
