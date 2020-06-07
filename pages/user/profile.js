@@ -1,17 +1,20 @@
+import { applySession } from 'next-session';
 import PropTypes from 'prop-types';
-import { withSession } from 'next-session';
-import jsHttpCookie from 'cookie';
-import UserHeader from '../../../components/partials/userHeader';
-import SettingNav from '../../../components/partials/settingNav';
+import React from 'react';
+import AppHeader from '../../components/partials/AppHeader';
+import SettingNav from '../../components/partials/settingNav';
+import { SessionUserType } from '../../components/propTypes';
+import { isAuthenticated } from '../../helpers/auth-helpers';
+import { sessionOptions } from '../../middlewares/Session';
 
 const chooseFile = () => {
   document.getElementById('fileInput').click();
 };
 
-const Profile = function Profile({ user }) {
+const ProfilePage = ({ session }) => {
   return (
     <div>
-      <UserHeader />
+      <AppHeader user={session.user} />
       <section className="mt-3 mt-4">
         <div className="container">
           <div className="row u-section">
@@ -32,9 +35,9 @@ const Profile = function Profile({ user }) {
                 <hr className="hr" />
                 <fieldset>
                   <label htmlFor="name">Name</label>
-                  <input type="text" defaultValue={user.name} placeholder="Full Name" id="name" />
+                  <input type="text" defaultValue={session.user.name} placeholder="Full Name" id="name" />
                   <label htmlFor="email">Email</label>
-                  <input type="text" placeholder="Email" id="email" defaultValue={user.email} />
+                  <input type="text" placeholder="Email" id="email" defaultValue={session.user.email} />
                   {/* <div className="row">
                     <div className="column">
                       <label htmlFor="town">Town</label>
@@ -110,28 +113,22 @@ const Profile = function Profile({ user }) {
     </div>
   );
 };
-export async function getServerSideProps(ctx) {
-  const { req } = ctx;
-  let user = null;
-  if (req && req.headers) {
-    const cookies = req.headers.cookie;
-    if (typeof cookies === 'string') {
-      const cookiesJson = jsHttpCookie.parse(cookies);
-      user = JSON.parse(cookiesJson.user);
-    }
+
+ProfilePage.propTypes = {
+  session: PropTypes.shape({
+    user: SessionUserType
+  })
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  if (!isAuthenticated(req)) {
+    res.writeHead(302, { location: '/login' });
+    res.end();
   }
 
-  let errorCode = null;
-  if (!user) errorCode = 404;
-  return {
-    props: {
-      user,
-      errorCode
-    } // will be passed to the page component as props
-  };
-}
-Profile.propTypes = {
-  user: PropTypes.object,
-  errorCode: PropTypes.number
+  return { props: { session: { user: req.session?.user } } };
 };
-export default withSession(Profile, {});
+
+export default ProfilePage;

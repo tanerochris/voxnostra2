@@ -1,9 +1,15 @@
-import UserHeader from '../../../components/partials/userHeader';
+import { applySession } from 'next-session';
+import PropTypes from 'prop-types';
+import React from 'react';
+import AppHeader from '../../components/partials/AppHeader';
+import { SessionUserType } from '../../components/propTypes';
+import { isAuthenticated } from '../../helpers/auth-helpers';
+import { sessionOptions } from '../../middlewares/Session';
 
-export default function Signup() {
+const UserHomePage = ({ session }) => {
   return (
-    <div>
-      <UserHeader />
+    <>
+      <AppHeader user={session.user} />
       <section className="mt-3">
         <div className="container">
           <div className="row u-section">
@@ -200,6 +206,25 @@ export default function Signup() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
-}
+};
+
+UserHomePage.propTypes = {
+  session: PropTypes.shape({
+    user: SessionUserType
+  })
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  if (!isAuthenticated(req)) {
+    res.writeHead(302, { location: '/login' });
+    res.end();
+  }
+
+  return { props: { session: { user: req.session?.user } } };
+};
+
+export default UserHomePage;

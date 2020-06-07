@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import jsCookie from 'js-cookie';
 import axios from 'axios';
-import AppHeader from '../components/partials/appHeader';
+import { applySession } from 'next-session';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import AppHeader from '../components/partials/AppHeader';
+import { isAuthenticated } from '../helpers/auth-helpers';
+import { sessionOptions } from '../middlewares/Session';
 
-export default function Login() {
+const LoginPage = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { register, handleSubmit, errors, reset } = useForm({
@@ -13,6 +16,7 @@ export default function Login() {
       password: ''
     }
   });
+  const router = useRouter();
   const onSubmitHandler = (user) => {
     axios({
       method: 'POST',
@@ -22,13 +26,11 @@ export default function Login() {
     })
       .then((response) => {
         if (response.status === 200) {
-          const newAccount = response.data;
-          jsCookie.set('user', newAccount);
+          // const newAccount = response.data;
+          // jsCookie.set('user', newAccount);
           reset();
-          setSuccessMessage('Succesfully logged in.');
-          setTimeout(() => {
-            window.location.assign(`/page/user/home`);
-          }, 1000);
+          setSuccessMessage('Successful logged in.');
+          setTimeout(() => router.push(`/user`), 1000);
         } else {
           setErrorMessage(response.data.message);
         }
@@ -37,6 +39,7 @@ export default function Login() {
         setErrorMessage(error.data.message);
       });
   };
+
   return (
     <div>
       <AppHeader />
@@ -109,4 +112,19 @@ export default function Login() {
       </section>
     </div>
   );
-}
+};
+
+LoginPage.propTypes = {};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  if (isAuthenticated(req)) {
+    res.writeHead(302, { location: '/' });
+    res.end();
+  }
+
+  return {};
+};
+
+export default LoginPage;

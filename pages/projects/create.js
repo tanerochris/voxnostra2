@@ -1,10 +1,14 @@
-import Head from 'next/head';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import UserHeader from '../../../components/partials/userHeader';
+import { applySession } from 'next-session';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import AppHeader from '../../components/partials/AppHeader';
+import { SessionUserType } from '../../components/propTypes';
+import { isAuthenticated } from '../../helpers/auth-helpers';
+import { sessionOptions } from '../../middlewares/Session';
 
-const CreateProject = () => {
+const ProjectsCreatePage = ({ session }) => {
   const [tags, setTag] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -26,7 +30,7 @@ const CreateProject = () => {
       reset();
       setSuccessMessage('Succesfully created project.');
       setTimeout(() => {
-        window.location.assign(`/page/project/${responseData.id}`);
+        window.location.assign(`/projects/${responseData.id}`);
       }, 1000);
     } catch (error) {
       setErrorMessage(error.response.data.message);
@@ -34,10 +38,7 @@ const CreateProject = () => {
   };
   return (
     <div>
-      <Head>
-        <link href="/style.css" rel="stylesheet" />
-      </Head>
-      <UserHeader />
+      <AppHeader user={session.user} />
       <section className="mt-4">
         <div className="container">
           <div className="row r-section">
@@ -195,4 +196,22 @@ const CreateProject = () => {
     </div>
   );
 };
-export default CreateProject;
+
+ProjectsCreatePage.propTypes = {
+  session: PropTypes.shape({
+    user: SessionUserType
+  })
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  if (!isAuthenticated(req)) {
+    res.writeHead(302, { location: '/login' });
+    res.end();
+  }
+
+  return { props: { session: { user: req.session?.user } } };
+};
+
+export default ProjectsCreatePage;

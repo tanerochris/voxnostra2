@@ -4,7 +4,7 @@ const ProjectCard = (props) => {
   return (
     <div className="project-list-item">
       <div className="project-title">
-        <a href={`/page/project/${props.id}`}>
+        <a href={`/project/${props.id}`}>
           <h3>
             <span className="title">{props.name}</span>&nbsp;&nbsp;&nbsp;
             <span className="verified">
@@ -57,6 +57,7 @@ const ProjectCard = (props) => {
     </div>
   );
 };
+
 ProjectCard.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
@@ -70,4 +71,5 @@ ProjectCard.propTypes = {
   currency: PropTypes.string,
   cost: PropTypes.number
 };
+
 export default ProjectCard;

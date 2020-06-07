@@ -1,9 +1,14 @@
+import axios from 'axios';
+import { applySession } from 'next-session';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import AppHeader from '../components/partials/appHeader';
+import AppHeader from '../components/partials/AppHeader';
+import { isAuthenticated } from '../helpers/auth-helpers';
+import { sessionOptions } from '../middlewares/Session';
 
-export default function Signup() {
+const SignUpPage = () => {
+  const router = useRouter();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { register, handleSubmit, errors, reset } = useForm({
@@ -30,10 +35,8 @@ export default function Signup() {
       .then((response) => {
         if (response.status === 200) {
           reset();
-          setSuccessMessage('Succesfully created project.');
-          setTimeout(() => {
-            window.location.assign(`/login`);
-          }, 1000);
+          setSuccessMessage('Successfully created project.');
+          setTimeout(() => router.push(`/user`), 1000);
         } else {
           setErrorMessage(response.data.message);
         }
@@ -154,4 +157,17 @@ export default function Signup() {
       </section>
     </div>
   );
-}
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  if (isAuthenticated(req)) {
+    res.writeHead(302, { location: '/' });
+    res.end();
+  }
+
+  return {};
+};
+
+export default SignUpPage;

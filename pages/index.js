@@ -1,9 +1,17 @@
-import AppHeader from '../components/partials/appHeader';
+import { applySession } from 'next-session';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import React from 'react';
+import AppHeader from '../components/partials/AppHeader';
+import { SessionUserType } from '../components/propTypes';
+import { sessionOptions } from '../middlewares/Session';
 
-export default function Home() {
+const HomePage = ({ session }) => {
+  const router = useRouter();
+
   return (
     <div>
-      <AppHeader />
+      <AppHeader user={session?.user} />
       <section className="mt-5">
         <div className="container">
           <div className="row r-section">
@@ -14,26 +22,49 @@ export default function Home() {
                 ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
               </p>
             </div>
-            <div className="column column-40">
-              <form>
-                <fieldset>
-                  <input type="text" name="username" placeholder="Username" id="username" />
-                  <input type="text" name="email" placeholder="Email" id="email" />
-                  <input type="text" name="password" placeholder="Password" id="password" />
-                  <button className="button-primary" type="submit" value="Send">
-                    Sign in
-                  </button>
-                  <div className="example-send-yourself-copy">
-                    <p>
-                      Forgot Password? click <a href="#">here</a>
-                    </p>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
+
+            {session?.user ? (
+              <div className="column-40">
+                <button className="btn" onClick={() => router.push('/user')}>
+                  Go to Dashboard
+                </button>
+              </div>
+            ) : (
+              <div className="column column-40">
+                <form>
+                  <fieldset>
+                    <input type="text" name="username" placeholder="Username" id="username" />
+                    <input type="text" name="email" placeholder="Email" id="email" />
+                    <input type="text" name="password" placeholder="Password" id="password" />
+                    <button className="button-primary" type="submit" value="Send">
+                      Sign in
+                    </button>
+                    <div className="example-send-yourself-copy">
+                      <p>
+                        Forgot Password? click <a href="#">here</a>
+                      </p>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </section>
     </div>
   );
-}
+};
+
+HomePage.propTypes = {
+  session: PropTypes.shape({
+    user: SessionUserType
+  })
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  return { props: { session: { user: req.session?.user } } };
+};
+
+export default HomePage;

@@ -1,10 +1,54 @@
-import UserHeader from '../../../components/partials/userHeader';
+/* eslint-disable no-alert */
+import mongoose from 'mongoose';
+import Error from 'next/error';
+// import axios from 'axios';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
+import AppHeader from '../../components/partials/AppHeader';
 
-export default function Signup() {
+const ViewProject = ({ project, errorCode }) => {
+  const [successMessage /* ,setSuccessMessage */] = useState('');
+  const [errorMessage /* ,setErrorMessage */] = useState('');
+  /*  const deleteProject = async (projectId) => {
+    if (window.confirm('Do you want to delete this project?')) {
+      try {
+        const response = await axios.delete(`/api/project/${projectId}`);
+        if (response.status === 200) {
+          setSuccessMessage('Project successfully deleted.');
+          setTimeout(() => {
+            window.location.assign(`/projects/list`);
+          });
+        }
+      } catch (error) {
+        setErrorMessage(error.response.data.message);
+      }
+    }
+  }; */
+  if (errorCode) {
+    return <Error statusCode={errorCode} />;
+  }
   return (
     <div>
-      <UserHeader />
+      <AppHeader />
       <section className="mt-3">
+        <div
+          className="alert-box"
+          style={{
+            background: errorMessage ? '#ff0000ad' : '#32cd32a1',
+            display: errorMessage || successMessage ? 'block' : 'none'
+          }}
+        >
+          {errorMessage ? (
+            <div className="error">
+              <span>{errorMessage}</span>
+            </div>
+          ) : null}
+          {successMessage ? (
+            <div className="success">
+              <span>{successMessage}</span>
+            </div>
+          ) : null}
+        </div>
         <div className="container">
           <div className="row u-section">
             <div className="column column-25 f">
@@ -13,18 +57,22 @@ export default function Signup() {
                   <img src="/assets/images/avatar-1.png" alt="project-logo" />
                 </div>
                 <div className="row r">
-                  <h5>Project Name</h5>
+                  <h5>{project.name}</h5>
                 </div>
                 <hr className="hr" />
                 <div className="row">
                   <div className="column">
-                    <h6>Organization Name</h6>
+                    <h6></h6>
                     <p>Catergory: Educationi</p>
-                    <p>Cost: 5 Million FCFA</p>
-                    <p>Date Started: 12th Jan 2020</p>
-                    <p>Duration: 6Months</p>
                     <p>
-                      Status: <span className="in-progress">In Progress</span>
+                      Cost: {project.cost} {project.currency}
+                    </p>
+                    <p>Date Started: {project.createdAt}</p>
+                    <p>
+                      Duration: {project.duration} {project.period}
+                    </p>
+                    <p>
+                      Status: <span className="in-progress">{project.status}</span>
                     </p>
                     <p>
                       Website: <a href="projectwebsite.com">www.projectwebsite.com</a>
@@ -52,19 +100,19 @@ export default function Signup() {
             </div>
             <div className="column column-40 m">
               <div className="row r">
-                <h5>About Organization</h5>
+                <h5>{project.createdBy.name}</h5>
               </div>
               <hr className="hr" />
               <div className="row d">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut laoreet, neque in consectetur imperdiet,
-                  lacus sem lobortis enim, vitae accumsan ligula nulla ac lacus. Pellentesque in augue eget nuncdictum
-                  sodales. In blandit pellentesque vestibulum. Interdum et malesuada fames ac ante ipsum primis in
-                  faucibus. In vel sollicitudin leo.
-                </p>
+                <h6>Details</h6>
+                <p>{project.description}</p>
+              </div>
+              <div className="row d">
+                <h6>Execution plan</h6>
+                <p>{project.executionPlan}</p>
               </div>
               <div className="row comment">
-                <p>12 Comments</p>
+                <p>{project.comments} Comments</p>
               </div>
               <div className="row comments">
                 <div className="row cmt">
@@ -153,4 +201,38 @@ export default function Signup() {
       </section>
     </div>
   );
+};
+
+const Project = mongoose.model('Project');
+
+export async function getServerSideProps({ params }) {
+  const project = await Project.findById(params.projectId).populate('createdBy', ['-password']);
+  let errorCode = '';
+  if (!project) errorCode = 404;
+  return {
+    props: {
+      project: project.view() || {},
+      errorCode
+    } // will be passed to the page component as props
+  };
 }
+ViewProject.propTypes = {
+  project: {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    createdBy: PropTypes.object,
+    createdAt: PropTypes.string,
+    duration: PropTypes.number,
+    period: PropTypes.string,
+    description: PropTypes.string,
+    comments: PropTypes.number,
+    status: PropTypes.string,
+    currency: PropTypes.string,
+    cost: PropTypes.number,
+    beneficiary: PropTypes.string,
+    executionPlan: PropTypes.string,
+    tags: PropTypes.array
+  },
+  errorCode: PropTypes.number
+};
+export default ViewProject;

@@ -1,12 +1,15 @@
-import Head from 'next/head';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import mongoose from 'mongoose';
+import { applySession } from 'next-session';
+import Head from 'next/head';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import AppHeader from '../../components/partials/AppHeader';
+import { SessionUserType } from '../../components/propTypes';
+import { sessionOptions } from '../../middlewares/Session';
 
-const Project = mongoose.model('Project');
-const EditProject = ({ project }) => {
+const ProjectsEditPage = ({ project, session }) => {
   const [tags, setTag] = useState(project.tags || []);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -21,21 +24,24 @@ const EditProject = ({ project }) => {
       ...project
     }
   });
+
   const onSubmitHandler = async (data) => {
     const updateData = { ...data, tags };
     try {
-      const response = await axios.put(`/api/project/${project.id}`, updateData);
+      const response = await axios.put(`/api/projects/${project.id}`, updateData);
       const responseData = response.data;
       setSuccessMessage('Succesfully created project.');
       setTimeout(() => {
-        window.location.assign(`/page/project/${responseData.id}`);
+        window.location.assign(`/projects/${responseData.id}`);
       }, 1000);
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }
   };
+
   return (
-    <div>
+    <>
+      <AppHeader user={session.user} />
       <Head>
         <link href="/style.css" rel="stylesheet" />
       </Head>
@@ -216,36 +222,33 @@ const EditProject = ({ project }) => {
           </button>
         </fieldset>
       </form>
-    </div>
+    </>
   );
 };
-EditProject.propTypes = {
-  project: {
-    id: PropTypes.string,
-    name: PropTypes.string,
-    createdBy: PropTypes.object,
-    createdAt: PropTypes.string,
-    duration: PropTypes.number,
-    period: PropTypes.string,
-    description: PropTypes.string,
-    comments: PropTypes.number,
-    status: PropTypes.string,
-    currency: PropTypes.string,
-    cost: PropTypes.number,
-    beneficiary: PropTypes.string,
-    executionPlan: PropTypes.string,
-    tags: PropTypes.array
-  }
+ProjectsEditPage.propTypes = {
+  project: PropTypes,
+  error: PropTypes.shape({
+    statusCode: PropTypes.number
+  }),
+  session: PropTypes.shape({
+    user: SessionUserType
+  })
 };
-export async function getServerSideProps({ query }) {
-  let project = null;
-  if (query.project_id) project = await Project.findById(query.project_id).populate('createdBy', ['-password']);
 
-  if (!project) return { error: { statusCode: 404 } };
+const ProjectModel = mongoose.model('Project');
+export async function getServerSideProps({ query, req, res }) {
+  await applySession(req, res, sessionOptions);
+  let project = null;
+
+  if (query.project_id) project = await ProjectModel.findById(query.project_id).populate('createdBy');
+
+  if (!project) return { session: { user: req.session?.user }, error: { statusCode: 404 } };
   return {
     props: {
-      project: project.view()
+      project: project.view(),
+      session: { user: req.session?.user }
     }
   };
 }
-export default EditProject;
+
+export default ProjectsEditPage;

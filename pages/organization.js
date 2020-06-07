@@ -1,9 +1,15 @@
-import UserHeader from '../../../components/partials/userHeader';
+import { applySession } from 'next-session';
+import PropTypes from 'prop-types';
+import React from 'react';
+import AppHeader from '../components/partials/AppHeader';
+import { SessionUserType } from '../components/propTypes';
+import { isAuthenticated } from '../helpers/auth-helpers';
+import { sessionOptions } from '../middlewares/Session';
 
-export default function Signup() {
+const OrganizationPage = ({ session }) => {
   return (
-    <div>
-      <UserHeader />
+    <>
+      <AppHeader user={session.user} />
       <section className="sec-org">
         <div className="bg-org">
           <img src="/assets/images/org_bg_img.jpg" alt="organisation-image" />
@@ -193,6 +199,25 @@ export default function Signup() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
-}
+};
+
+OrganizationPage.propTypes = {
+  session: PropTypes.shape({
+    user: SessionUserType
+  })
+};
+
+export const getServerSideProps = async ({ req, res }) => {
+  await applySession(req, res, sessionOptions);
+
+  if (!isAuthenticated(req)) {
+    res.writeHead(302, { location: '/' });
+    res.end();
+  }
+
+  return { props: { session: { user: req.session?.user } } };
+};
+
+export default OrganizationPage;
