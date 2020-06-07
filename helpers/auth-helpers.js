@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const path = require('path');
 const PropertiesReader = require('properties-reader');
+const { AuthorizationError } = require('./api-errors');
 
 const properties = PropertiesReader(path.resolve('voxnostra.properties'));
 
@@ -49,4 +50,21 @@ exports.setUserSession = function setUserSession(req, user) {
       name: user.name
     };
   }
+};
+
+/**
+ * Check if current user exist, and is authenticated
+ *
+ * @param req
+ * @param {boolean=} shouldError - If no current user, throw Authorization Error
+ * @param {string=} message - Message to throw using AuthorizationError helper
+ */
+exports.isAuthenticated = function isAuthenticated(req, shouldError, message) {
+  const authenticated = !!(req.session.user && req.session.user.id);
+
+  if (!authenticated && shouldError) {
+    throw new AuthorizationError(message);
+  }
+
+  return authenticated;
 };

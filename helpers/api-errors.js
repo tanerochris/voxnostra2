@@ -5,7 +5,7 @@
  *
  * name, message, stack
  */
-export class ErrorResponse extends Error {
+class ErrorResponse extends Error {
   constructor(message) {
     super();
     this.name = 'Internal Server Error';
@@ -14,7 +14,7 @@ export class ErrorResponse extends Error {
   }
 }
 
-export class AuthorizationError extends ErrorResponse {
+class AuthorizationError extends ErrorResponse {
   constructor(message) {
     super(message);
     this.name = 'AuthorizationError';
@@ -22,7 +22,7 @@ export class AuthorizationError extends ErrorResponse {
   }
 }
 
-export class ForbiddenError extends ErrorResponse {
+class ForbiddenError extends ErrorResponse {
   constructor(message) {
     super(message);
     this.name = 'ForbiddenError';
@@ -30,20 +30,22 @@ export class ForbiddenError extends ErrorResponse {
   }
 }
 
-export class ValidationError extends ErrorResponse {
+class ValidationError extends ErrorResponse {
   constructor(message = 'Input Validation Error') {
     super(message);
     this.name = 'ValidationError';
     this.errorCode = 400;
   }
 }
-export class NotFoundError extends ErrorResponse {
+
+class NotFoundError extends ErrorResponse {
   constructor(message = 'Not found.') {
     super(message);
     this.name = 'NotFoundError';
     this.errorCode = 404;
   }
 }
+
 const errors = {
   ErrorResponse,
   AuthorizationError,
@@ -51,7 +53,8 @@ const errors = {
   ValidationError,
   NotFoundError
 };
-export class ApiResponseError extends Error {
+
+class ApiResponseError extends Error {
   static getError(errorBody) {
     let errorResponse = null;
     let message = '';
@@ -77,3 +80,12 @@ export class ApiResponseError extends Error {
     return errorResponse;
   }
 }
+
+exports = {
+  ErrorResponse,
+  AuthorizationError,
+  ForbiddenError,
+  ValidationError,
+  NotFoundError,
+  ApiResponseError
+};
