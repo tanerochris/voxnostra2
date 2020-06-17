@@ -21,7 +21,7 @@ const UserHomePage = ({ session }) => {
     loadProjects();
   });
   return (
-    <div>
+    <>
       <Head>
         <link href="/style.css" rel="stylesheet" />
       </Head>
@@ -71,7 +71,7 @@ const UserHomePage = ({ session }) => {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 
