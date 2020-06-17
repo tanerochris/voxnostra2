@@ -123,7 +123,6 @@ export const getServerSideProps = async ({ req, res }) => {
     res.writeHead(302, { location: '/login' });
     res.end();
   }
-
   return { props: { session } };
 };
 

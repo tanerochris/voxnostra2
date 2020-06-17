@@ -1,13 +1,25 @@
-import mongoose from 'mongoose';
+import axios from 'axios';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppHeader from '../../components/partials/AppHeader';
 import ProjectCard from '../../components/partials/project';
 import { SessionType } from '../../components/propTypes';
 import getSession from '../../helpers/session-helpers';
 
-const ProjectsIndexPage = ({ projects, session }) => {
+const ProjectsIndexPage = ({ session }) => {
+  const [projects, setProjects] = useState([]);
+  const loadProjects = async () => {
+    try {
+      const response = await axios.get('/api/projects');
+      if (response.status === 200) setProjects(response.data);
+    } catch (error) {
+      // console.error(error);
+    }
+  };
+  useEffect(() => {
+    loadProjects();
+  });
   return (
     <>
       <AppHeader user={session.user} />
@@ -30,14 +42,10 @@ ProjectsIndexPage.propTypes = {
   projects: PropTypes.array
 };
 
-const ProjectModel = mongoose.model('Project');
-
 export const getServerSideProps = async ({ req, res }) => {
   const session = await getSession(req, res);
-
-  const projects = (await ProjectModel.find().exec()).map((project) => project.view());
-
-  return { props: { session, projects } };
+  const sessionJSON = JSON.parse(session);
+  return { props: { session: sessionJSON } };
 };
 
 export default ProjectsIndexPage;

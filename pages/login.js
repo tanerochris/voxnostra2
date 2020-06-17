@@ -29,7 +29,7 @@ const LoginPage = () => {
           // jsCookie.set('user', newAccount);
           reset();
           setSuccessMessage('Successful logged in.');
-          setTimeout(() => router.push(`/user`), 1000);
+          setTimeout(() => router.push(`/user/home`), 1000);
         } else {
           setErrorMessage(response.data.message);
         }

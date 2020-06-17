@@ -21,7 +21,7 @@ const ProjectsCreatePage = ({ session }) => {
     }
   });
   const onSubmitHandler = async (data) => {
-    const project = { ...data, tags, createdBy: '5ec5248ce52d3c222ceb84b9' };
+    const project = { ...data, tags };
     try {
       const response = await axios.post('/api/project', project);
       const responseData = response.data;
@@ -201,13 +201,13 @@ ProjectsCreatePage.propTypes = {
 
 export const getServerSideProps = async ({ req, res }) => {
   const session = await getSession(req, res);
-
+  const sessionJson = JSON.parse(session);
   if (!isAuthenticated(req)) {
     res.writeHead(302, { location: '/login' });
     res.end();
   }
 
-  return { props: { session } };
+  return { props: { session: sessionJson } };
 };
 
 export default ProjectsCreatePage;
