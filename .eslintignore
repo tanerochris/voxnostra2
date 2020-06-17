@@ -1,0 +1,9 @@
+node_modules
+.next
+docs
+public
+test
+.vscode
+build
+docker
+src/generated
