@@ -6,7 +6,6 @@ import getSession from '../helpers/session-helpers';
 
 const HomePage = ({ session }) => {
   const router = useRouter();
-
   return (
     <div>
       <AppHeader user={session?.user} />
@@ -23,7 +22,7 @@ const HomePage = ({ session }) => {
 
             {session?.user ? (
               <div className="column-40">
-                <button className="btn" onClick={() => router.push('/user')}>
+                <button className="btn" onClick={() => router.push('/user/home')}>
                   Go to Dashboard
                 </button>
               </div>
@@ -59,8 +58,8 @@ HomePage.propTypes = {
 
 export const getServerSideProps = async ({ req, res }) => {
   const session = await getSession(req, res);
-
-  return { props: { session } };
+  const sessionJson = JSON.parse(session);
+  return { props: { session: sessionJson } };
 };
 
 export default HomePage;

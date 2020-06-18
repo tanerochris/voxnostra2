@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "node app.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production & node app.js",
     "test": "jest --watch --verbose",
     "test:ci": "jest --ci --forceExit --detectOpenHandles --maxWorkers=10",
     "lint": "eslint \"./**/*.js\""
