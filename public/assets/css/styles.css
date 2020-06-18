@@ -97,7 +97,7 @@ a:hover {
   float: right;
 }
 span.title {
-  letter-spacing: 0.5em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: bold;
 }

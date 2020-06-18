@@ -4,7 +4,7 @@ const ProjectCard = (props) => {
   return (
     <div className="project-list-item">
       <div className="project-title">
-        <a href={`/project/${props.id}`}>
+        <a href={`/projects/${props.id}`}>
           <h3>
             <span className="title">{props.name}</span>&nbsp;&nbsp;&nbsp;
             <span className="verified">

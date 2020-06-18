@@ -1,17 +1,18 @@
-import axios from 'axios';
-import mongoose from 'mongoose';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import AppHeader from '../../components/partials/AppHeader';
 import { SessionType } from '../../components/propTypes';
 import getSession from '../../helpers/session-helpers';
 
-const ProjectsEditPage = ({ project, session }) => {
-  const [tags, setTag] = useState(project.tags || []);
+const ProjectsEditPage = ({ projectId, session }) => {
+  const [tags, setTag] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [project, setProject] = useState({});
+
   const { register, handleSubmit, errors } = useForm({
     defaultValues: {
       name: '',
@@ -38,6 +39,19 @@ const ProjectsEditPage = ({ project, session }) => {
     }
   };
 
+  const loadProject = async (pid) => {
+    try {
+      const response = await axios.get(`/api/project/${pid}`);
+      // console.log(response);
+      if (response.status === 200) setProject(response.data);
+      setTag(project.tags);
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+  useEffect(() => {
+    loadProject(projectId);
+  });
   return (
     <>
       <AppHeader user={session.user} />
@@ -203,12 +217,16 @@ const ProjectsEditPage = ({ project, session }) => {
               />
             </label>
             <div className="tags">
-              {tags.map((tag, i) => (
-                <div className="tag" key={`tags${i}`}>
-                  <span>{tag}</span>
-                  <span className="close"></span>
-                </div>
-              ))}
+              {tags ? (
+                tags.map((tag, i) => (
+                  <div className="tag" key={`tags${i}`}>
+                    <span>{tag}</span>
+                    <span className="close"></span>
+                  </div>
+                ))
+              ) : (
+                <span></span>
+              )}
             </div>
           </div>
         </fieldset>
@@ -225,25 +243,20 @@ const ProjectsEditPage = ({ project, session }) => {
   );
 };
 ProjectsEditPage.propTypes = {
-  project: PropTypes,
+  projectId: PropTypes.string,
   error: PropTypes.shape({
     statusCode: PropTypes.number
   }),
   session: SessionType
 };
 
-const ProjectModel = mongoose.model('Project');
 export async function getServerSideProps({ query, req, res }) {
   const session = await getSession(req, res);
-  let project = null;
-
-  if (query.project_id) project = await ProjectModel.findById(query.project_id).populate('createdBy');
-
-  if (!project) return { session, error: { statusCode: 404 } };
+  const sessionJSON = JSON.parse(session);
   return {
     props: {
-      session,
-      project: project.view()
+      session: sessionJSON,
+      projectId: query.project_id
     }
   };
 }

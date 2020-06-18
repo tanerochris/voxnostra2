@@ -1,16 +1,17 @@
 /* eslint-disable no-alert */
-import mongoose from 'mongoose';
-import Error from 'next/error';
-// import axios from 'axios';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import Head from 'next/head';
 import AppHeader from '../../components/partials/AppHeader';
-import { ProjectType, SessionType } from '../../components/propTypes';
+import { SessionType } from '../../components/propTypes';
 import getSession from '../../helpers/session-helpers';
+import ProjectCard from '../../components/partials/project';
 
-const ViewProject = ({ project, errorCode, session }) => {
+const ViewProject = ({ projectId, session }) => {
   const [successMessage /* ,setSuccessMessage */] = useState('');
   const [errorMessage /* ,setErrorMessage */] = useState('');
+  const [project, setProject] = useState({});
   /*  const deleteProject = async (projectId) => {
     if (window.confirm('Do you want to delete this project?')) {
       try {
@@ -26,11 +27,23 @@ const ViewProject = ({ project, errorCode, session }) => {
       }
     }
   }; */
-  if (errorCode) {
-    return <Error statusCode={errorCode} />;
-  }
+  const loadProject = async (pid) => {
+    try {
+      const response = await axios.get(`/api/project/${pid}`);
+      // console .log(response);
+      if (response.status === 200) setProject(response.data);
+    } catch (e) {
+      // console.log(e);
+    }
+  };
+  useEffect(() => {
+    loadProject(projectId);
+  });
   return (
     <div>
+      <Head>
+        <link href="/style.css" rel="stylesheet" />
+      </Head>
       <AppHeader user={session.user} />
       <section className="mt-3">
         <div
@@ -76,10 +89,6 @@ const ViewProject = ({ project, errorCode, session }) => {
                     <p>
                       Status: <span className="in-progress">{project.status}</span>
                     </p>
-                    <p>
-                      Website: <a href="projectwebsite.com">www.projectwebsite.com</a>
-                    </p>
-                    <p>2,345 Followers</p>
                   </div>
                 </div>
               </div>
@@ -100,19 +109,11 @@ const ViewProject = ({ project, errorCode, session }) => {
                 </div>
               </div>
             </div>
-            <div className="column column-40 m">
-              <div className="row r">
-                <h5>{project.createdBy.name}</h5>
+            <div className="column column-65 m">
+              <div className="row">
+                <ProjectCard {...project} />
               </div>
-              <hr className="hr" />
-              <div className="row d">
-                <h6>Details</h6>
-                <p>{project.description}</p>
-              </div>
-              <div className="row d">
-                <h6>Execution plan</h6>
-                <p>{project.executionPlan}</p>
-              </div>
+              <div className="row">{project.executionPlan}</div>
               <div className="row comment">
                 <p>{project.comments} Comments</p>
               </div>
@@ -162,42 +163,6 @@ const ViewProject = ({ project, errorCode, session }) => {
                 </div>
               </div>
             </div>
-            <div className="column column-25 m">
-              <div className="row r">
-                <h5>Contractors</h5>
-              </div>
-              <hr className="hr" />
-              <div className="row pr">
-                <div className="column column-25 o">
-                  <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
-                </div>
-                <div className="column column-75 o">
-                  <h6>John Smith</h6>
-                  <p>Computer Engineer</p>
-                  <p className="small">Buea, Cameroon</p>
-                </div>
-              </div>
-              <div className="row pr">
-                <div className="column column-25 o">
-                  <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
-                </div>
-                <div className="column column-75 o">
-                  <h6>John Smith</h6>
-                  <p>Computer Engineer</p>
-                  <p className="small">Buea, Cameroon</p>
-                </div>
-              </div>
-              <div className="row pr">
-                <div className="column column-25 o">
-                  <img src="/assets/images/avatar-1.png" alt="organisation-pic" />
-                </div>
-                <div className="column column-75 o">
-                  <h6>John Smith</h6>
-                  <p>Computer Engineer</p>
-                  <p className="small">Buea, Cameroon</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -205,26 +170,19 @@ const ViewProject = ({ project, errorCode, session }) => {
   );
 };
 
-const Project = mongoose.model('Project');
-
 export async function getServerSideProps({ params, req, res }) {
   const session = await getSession(req, res);
-
-  const project = await Project.findById(params.projectId).populate('createdBy', ['-password']);
-  let errorCode = '';
-  if (!project) errorCode = 404;
+  const sessionJson = JSON.parse(session);
   return {
     props: {
-      session,
-      project: project.view() || {},
-      errorCode
+      session: sessionJson,
+      projectId: params.projectId
     } // will be passed to the page component as props
   };
 }
 
 ViewProject.propTypes = {
   session: SessionType,
-  project: ProjectType,
-  errorCode: PropTypes.number
+  projectId: PropTypes.string
 };
 export default ViewProject;
